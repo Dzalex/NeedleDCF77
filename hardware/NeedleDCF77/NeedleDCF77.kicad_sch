@@ -193,7 +193,7 @@
   (symbol (lib_id "MikroE:MINI-M4_STM32") (at 153.67 85.09 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid cd5dd998-b274-4df5-8f6e-b689e6c32b55)
-    (property "Reference" "U?" (id 0) (at 153.67 54.61 0))
+    (property "Reference" "U1" (id 0) (at 153.67 54.61 0))
     (property "Value" "" (id 1) (at 153.67 57.15 0))
     (property "Footprint" "" (id 2) (at 153.67 85.09 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -249,7 +249,7 @@
 
   (symbol_instances
     (path "/cd5dd998-b274-4df5-8f6e-b689e6c32b55"
-      (reference "U?") (unit 1) (value "MINI-M4_STM32") (footprint "Package_DIP:DIP-40_W15.24mm_LongPads")
+      (reference "U1") (unit 1) (value "MINI-M4_STM32") (footprint "Package_DIP:DIP-40_W15.24mm_LongPads")
     )
   )
 )
