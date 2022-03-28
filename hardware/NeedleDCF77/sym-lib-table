@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "MikroE")(type "KiCad")(uri "${KIPRJMOD}/MikroE.kicad_sym")(options "")(descr ""))
+)
