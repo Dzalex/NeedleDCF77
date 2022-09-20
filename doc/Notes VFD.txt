@@ -1,0 +1,2 @@
+- PT6312 je VFD kontroler
+	Drajver za filament moze biti LM9022, a to je u stvari spinof LM4871
