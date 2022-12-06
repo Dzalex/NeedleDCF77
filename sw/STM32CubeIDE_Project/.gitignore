@@ -7,6 +7,14 @@ tmp/
 *.swp
 *~.nib
 local.properties
-.settings/
+**/.settings
 .loadpath
 .recommenders
+*.d
+*.o
+*.su
+*.mk
+*.map
+*.list
+*.elf
+makefile
