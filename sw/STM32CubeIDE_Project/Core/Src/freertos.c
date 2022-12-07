@@ -54,6 +54,27 @@ const osThreadAttr_t defaultTask_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
+/* Definitions for DCF77Task */
+osThreadId_t DCF77TaskHandle;
+const osThreadAttr_t DCF77Task_attributes = {
+  .name = "DCF77Task",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityLow,
+};
+/* Definitions for needleTask */
+osThreadId_t needleTaskHandle;
+const osThreadAttr_t needleTask_attributes = {
+  .name = "needleTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityLow,
+};
+/* Definitions for VFDTask */
+osThreadId_t VFDTaskHandle;
+const osThreadAttr_t VFDTask_attributes = {
+  .name = "VFDTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityLow,
+};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -61,6 +82,9 @@ const osThreadAttr_t defaultTask_attributes = {
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
+void StartDCF77Task(void *argument);
+void StartNeedleTask(void *argument);
+void StartVFDTask(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -94,6 +118,15 @@ void MX_FREERTOS_Init(void) {
   /* creation of defaultTask */
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
+  /* creation of DCF77Task */
+  DCF77TaskHandle = osThreadNew(StartDCF77Task, NULL, &DCF77Task_attributes);
+
+  /* creation of needleTask */
+  needleTaskHandle = osThreadNew(StartNeedleTask, NULL, &needleTask_attributes);
+
+  /* creation of VFDTask */
+  VFDTaskHandle = osThreadNew(StartVFDTask, NULL, &VFDTask_attributes);
+
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
@@ -120,6 +153,60 @@ void StartDefaultTask(void *argument)
     osDelay(1);
   }
   /* USER CODE END StartDefaultTask */
+}
+
+/* USER CODE BEGIN Header_StartDCF77Task */
+/**
+* @brief Function implementing the DCF77Task thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartDCF77Task */
+void StartDCF77Task(void *argument)
+{
+  /* USER CODE BEGIN StartDCF77Task */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END StartDCF77Task */
+}
+
+/* USER CODE BEGIN Header_StartNeedleTask */
+/**
+* @brief Function implementing the needleTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartNeedleTask */
+void StartNeedleTask(void *argument)
+{
+  /* USER CODE BEGIN StartNeedleTask */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END StartNeedleTask */
+}
+
+/* USER CODE BEGIN Header_StartVFDTask */
+/**
+* @brief Function implementing the VFDTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartVFDTask */
+void StartVFDTask(void *argument)
+{
+  /* USER CODE BEGIN StartVFDTask */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END StartVFDTask */
 }
 
 /* Private application code --------------------------------------------------*/
