@@ -148,6 +148,7 @@ void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
   /* Infinite loop */
+  printf("Start!");
   for(;;)
   {
     osDelay(1);
