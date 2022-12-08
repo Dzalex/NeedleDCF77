@@ -52,21 +52,21 @@
 osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
-  .stack_size = 128 * 4,
+  .stack_size = 96 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for DCF77Task */
 osThreadId_t DCF77TaskHandle;
 const osThreadAttr_t DCF77Task_attributes = {
   .name = "DCF77Task",
-  .stack_size = 128 * 4,
+  .stack_size = 96 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
 /* Definitions for VFDTask */
 osThreadId_t VFDTaskHandle;
 const osThreadAttr_t VFDTask_attributes = {
   .name = "VFDTask",
-  .stack_size = 128 * 4,
+  .stack_size = 96 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
 
