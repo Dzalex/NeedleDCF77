@@ -952,7 +952,7 @@
       )
     )
     (symbol "LIPO charger and Regulator-rescue:LTC3558" (pin_names (offset 1.016)) (in_bom yes) (on_board yes)
-      (property "Reference" "U?" (id 0) (at -3.81 34.29 0)
+      (property "Reference" "U1" (id 0) (at -3.81 34.29 0)
         (effects (font (size 1.524 1.524)))
       )
       (property "Value" "LTC3558" (id 1) (at -3.81 31.75 0)
@@ -967,7 +967,7 @@
       (symbol "LTC3558_0_1"
         (rectangle (start -15.24 30.48) (end 7.62 -8.89)
           (stroke (width 0) (type default) (color 0 0 0 0))
-          (fill (type none))
+          (fill (type background))
         )
       )
       (symbol "LTC3558_1_1"
@@ -1452,7 +1452,7 @@
       (symbol "PT6312_0_1"
         (rectangle (start -11.43 24.13) (end 11.43 -35.56)
           (stroke (width 0) (type default) (color 0 0 0 0))
-          (fill (type none))
+          (fill (type background))
         )
       )
       (symbol "PT6312_1_1"
@@ -2813,7 +2813,7 @@
   (symbol (lib_id "LIPO charger and Regulator-rescue:LTC3558") (at 172.72 60.96 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 3ab020b6-0cc4-4509-9b49-8e44fee1d014)
-    (property "Reference" "U1" (id 0) (at 168.91 26.67 0)
+    (property "Reference" "U?" (id 0) (at 168.91 26.67 0)
       (effects (font (size 1.524 1.524)))
     )
     (property "Value" "LTC3558" (id 1) (at 168.91 29.21 0)
@@ -3894,14 +3894,14 @@
     (path "/7b154adc-23bd-4da5-8155-c73486be12a1"
       (reference "RV?") (unit 1) (value "Minutes_pot") (footprint "")
     )
-    (path "/3ab020b6-0cc4-4509-9b49-8e44fee1d014"
-      (reference "U1") (unit 1) (value "LTC3558") (footprint "Package_DFN_QFN:QFN-20-1EP_3x3mm_P0.4mm_EP1.65x1.65mm")
-    )
     (path "/5d95fce6-5441-4959-848f-78f7f71c8db3"
       (reference "U2") (unit 1) (value "STM32L051C8Tx") (footprint "Package_QFP:LQFP-48_7x7mm_P0.5mm")
     )
     (path "/0285a806-82b8-4629-a2e8-7fdafa1e1ae6"
       (reference "U?") (unit 1) (value "PT6312") (footprint "Package_QFP:LQFP-44_10x10mm_P0.8mm")
+    )
+    (path "/3ab020b6-0cc4-4509-9b49-8e44fee1d014"
+      (reference "U?") (unit 1) (value "LTC3558") (footprint "Package_DFN_QFN:QFN-20-1EP_3x3mm_P0.4mm_EP1.65x1.65mm")
     )
     (path "/4e3ee435-692d-4ee0-9874-5ac947f3a87b"
       (reference "Y?") (unit 1) (value "32.768kHz") (footprint "Crystal:Crystal_C38-LF_D3.0mm_L8.0mm_Horizontal_1EP_style2")
