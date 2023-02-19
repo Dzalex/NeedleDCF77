@@ -2207,9 +2207,23 @@
     (uuid fee7bb4a-b2c2-4026-95de-d74f8a79ab44)
   )
 
+  (text "Add section with LM4871/LM9022 (VFD Filament Driver)"
+    (at 72.39 130.81 0)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid 1f03ef89-932c-4ae8-9a53-b2fd1c3b6c55)
+  )
+  (text "LDOs:\nLP2981" (at 190.5 67.31 0)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid 49a73b5a-171d-48ca-adf3-3ba6cc223e32)
+  )
   (text "PA5 SCK" (at 193.04 148.59 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 7b1035c3-33dd-4779-9bae-6d8f0820d075)
+  )
+  (text "On second PS create 5V to power VFD filament driver,\n and use linear regulator to 3v3 for ex on DCF77, or pending\n"
+    (at 189.23 62.23 0)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid 8d42d475-0002-41e5-975a-1d64d0b8f647)
   )
   (text "PA7 MOSI" (at 193.04 153.67 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
