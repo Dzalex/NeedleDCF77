@@ -58,8 +58,12 @@ int __io_putchar(int ch);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define PWM_Min_Pin GPIO_PIN_1
+#define PWM_Min_GPIO_Port GPIOA
 #define PWM_Hour_Pin GPIO_PIN_2
 #define PWM_Hour_GPIO_Port GPIOA
+#define PWM_Sec_Pin GPIO_PIN_3
+#define PWM_Sec_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
 
