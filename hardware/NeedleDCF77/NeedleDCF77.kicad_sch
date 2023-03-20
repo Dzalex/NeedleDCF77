@@ -3074,6 +3074,31 @@
     )
   )
 
+  (symbol (lib_id "power:GND") (at 48.26 187.96 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid 40dc452c-0e40-444c-ad41-28af1d500805)
+    (property "Reference" "#PWR02" (at 48.26 194.31 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "GND" (at 48.26 193.04 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Footprint" "" (at 48.26 187.96 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 48.26 187.96 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid b5ea00d9-e77d-49a2-b242-1d9b75c7e11b))
+    (instances
+      (project "NeedleDCF77"
+        (path "/9538e4ed-27e6-4c37-b989-9859dc0d49e8"
+          (reference "#PWR02") (unit 1)
+        )
+      )
+    )
+  )
+
   (symbol (lib_id "Device:R_Small") (at 313.69 142.24 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 46bcba15-a24d-49a3-a385-a669c31b3c22)
@@ -4244,6 +4269,31 @@
       (project "NeedleDCF77"
         (path "/9538e4ed-27e6-4c37-b989-9859dc0d49e8"
           (reference "R?") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "power:GND") (at 45.72 187.96 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid ff1164a0-b417-4e76-9e4f-6ad4b45bc218)
+    (property "Reference" "#PWR01" (at 45.72 194.31 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "GND" (at 45.72 193.04 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Footprint" "" (at 45.72 187.96 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 45.72 187.96 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 993ea3df-64e6-4fd1-8ccc-c937b2e5ef12))
+    (instances
+      (project "NeedleDCF77"
+        (path "/9538e4ed-27e6-4c37-b989-9859dc0d49e8"
+          (reference "#PWR01") (unit 1)
         )
       )
     )
