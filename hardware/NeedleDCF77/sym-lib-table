@@ -4,4 +4,5 @@
   (lib (name "LIPO charger and Regulator-rescue")(type "KiCad")(uri "${KIPRJMOD}/LIPO charger and Regulator-rescue.kicad_sym")(options "")(descr ""))
   (lib (name "SparFun PowerIC")(type "Legacy")(uri "${KIPRJMOD}/SparkFun-PowerIC.lib")(options "")(descr ""))
   (lib (name "VFD_Driver")(type "KiCad")(uri "${KIPRJMOD}/VFD_Driver.kicad_sym")(options "")(descr ""))
+  (lib (name "VFD")(type "KiCad")(uri "${KIPRJMOD}/VFD.kicad_sym")(options "")(descr ""))
 )
