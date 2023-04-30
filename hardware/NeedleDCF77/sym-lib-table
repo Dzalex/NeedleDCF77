@@ -5,4 +5,5 @@
   (lib (name "SparFun PowerIC")(type "Legacy")(uri "${KIPRJMOD}/SparkFun-PowerIC.lib")(options "")(descr ""))
   (lib (name "VFD_Driver")(type "KiCad")(uri "${KIPRJMOD}/VFD_Driver.kicad_sym")(options "")(descr ""))
   (lib (name "VFD")(type "KiCad")(uri "${KIPRJMOD}/VFD.kicad_sym")(options "")(descr ""))
+  (lib (name "Inverting_switching_regulator")(type "KiCad")(uri "${KIPRJMOD}/Inverting_switching_regulator.kicad_sym")(options "")(descr ""))
 )
