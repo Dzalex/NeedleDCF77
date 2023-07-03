@@ -64,6 +64,14 @@ int __io_putchar(int ch);
 #define PWM_Hour_GPIO_Port GPIOA
 #define PWM_Sec_Pin GPIO_PIN_3
 #define PWM_Sec_GPIO_Port GPIOA
+#define LTC_CHRG_Pin GPIO_PIN_12
+#define LTC_CHRG_GPIO_Port GPIOB
+#define LTC_MODE_Pin GPIO_PIN_13
+#define LTC_MODE_GPIO_Port GPIOB
+#define LTC_HPWR_Pin GPIO_PIN_14
+#define LTC_HPWR_GPIO_Port GPIOB
+#define LTC_CHRGB15_Pin GPIO_PIN_15
+#define LTC_CHRGB15_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 
