@@ -4605,10 +4605,10 @@
       (effects (font (size 1.27 1.27)) (justify left) hide)
     )
   )
-  (global_label "FOSC" (shape output) (at 303.53 80.01 0) (fields_autoplaced)
+  (global_label "PWM_Fosc" (shape output) (at 303.53 80.01 0) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify left))
     (uuid 1ba9770d-6edc-4dc5-988b-609a36b5d474)
-    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 311.3344 80.01 0)
+    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 315.9305 80.01 0)
       (effects (font (size 1.27 1.27)) (justify left) hide)
     )
   )
@@ -4745,10 +4745,10 @@
       (effects (font (size 1.27 1.27)) (justify right) hide)
     )
   )
-  (global_label "Fosc" (shape input) (at 27.94 175.26 180) (fields_autoplaced)
+  (global_label "PWM_Fosc" (shape input) (at 27.94 175.26 180) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
     (uuid 70367cb4-b9f8-4b38-957a-ad4c07f8ffe0)
-    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 20.6799 175.26 0)
+    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 15.5395 175.26 0)
       (effects (font (size 1.27 1.27)) (justify right) hide)
     )
   )
@@ -5119,9 +5119,9 @@
     (property "Datasheet" "~" (at 74.93 62.23 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid f14495e7-5e76-4be7-a247-1dca54f0cfb3))
-    (pin "2" (uuid 375ec2ca-517b-4607-aec9-6dd16919e1ed))
-    (pin "3" (uuid 553cf2c0-31ac-47a7-b48e-6a2acbc658f2))
+    (pin "1" (uuid eee0a4b9-f0f5-4ad2-87e8-cfd25b3eb410))
+    (pin "2" (uuid 11de2253-dc6f-42cd-9ce2-b52314485dfe))
+    (pin "3" (uuid 7b27253f-afab-4ac2-882b-2cc84c2b9c66))
     (instances
       (project "NeedleDCF77"
         (path "/9538e4ed-27e6-4c37-b989-9859dc0d49e8"
@@ -6369,8 +6369,8 @@
     (property "Datasheet" "~" (at 96.52 64.77 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid ab0551c7-8bbc-4554-873d-f86edac52610))
-    (pin "2" (uuid 5d71c8df-c27c-496f-b5cd-05e7d53d8b15))
+    (pin "1" (uuid 83d8cf5f-c76b-4e3f-a49d-0b005a678b65))
+    (pin "2" (uuid ee075de4-5b19-49eb-9e58-0253e2c89486))
     (instances
       (project "NeedleDCF77"
         (path "/9538e4ed-27e6-4c37-b989-9859dc0d49e8"
@@ -6829,7 +6829,7 @@
     (property "Datasheet" "" (at 96.52 76.2 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid ca6826d1-790b-42c1-9e09-4c53074e4d81))
+    (pin "1" (uuid a3c50a16-84df-4047-a426-539eb5c8b181))
     (instances
       (project "NeedleDCF77"
         (path "/9538e4ed-27e6-4c37-b989-9859dc0d49e8"
@@ -7268,7 +7268,7 @@
     (property "Datasheet" "" (at 83.82 64.77 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid aa352e89-3e94-4d0c-bab9-9d4b8ead4224))
+    (pin "1" (uuid 77925763-3dc7-4e89-a84d-72880097edbe))
     (instances
       (project "NeedleDCF77"
         (path "/9538e4ed-27e6-4c37-b989-9859dc0d49e8"
@@ -7683,8 +7683,8 @@
     (property "Datasheet" "~" (at 96.52 72.39 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 0a216b93-6ff3-4285-8190-75e45334a68b))
-    (pin "2" (uuid c34fff9d-3292-4692-8693-271d299c555b))
+    (pin "1" (uuid 81a5755f-2d72-41f2-b10a-28d45aff630a))
+    (pin "2" (uuid 2f559b60-058a-4647-b1fc-3f0e672c7d5b))
     (instances
       (project "NeedleDCF77"
         (path "/9538e4ed-27e6-4c37-b989-9859dc0d49e8"
