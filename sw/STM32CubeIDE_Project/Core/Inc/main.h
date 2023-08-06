@@ -66,6 +66,8 @@ int __io_putchar(int ch);
 #define PWM_Sec_GPIO_Port GPIOA
 #define PWM_FOSC_Pin GPIO_PIN_5
 #define PWM_FOSC_GPIO_Port GPIOA
+#define BATT_LEVEL_Pin GPIO_PIN_7
+#define BATT_LEVEL_GPIO_Port GPIOA
 #define SHDN_24V_Pin GPIO_PIN_11
 #define SHDN_24V_GPIO_Port GPIOB
 #define LTC_CHRG_Pin GPIO_PIN_12
@@ -76,6 +78,8 @@ int __io_putchar(int ch);
 #define LTC_HPWR_GPIO_Port GPIOB
 #define LTC_CHRGB15_Pin GPIO_PIN_15
 #define LTC_CHRGB15_GPIO_Port GPIOB
+#define BATT_CHECK_Pin GPIO_PIN_8
+#define BATT_CHECK_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
 
