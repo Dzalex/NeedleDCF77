@@ -64,10 +64,16 @@ int __io_putchar(int ch);
 #define PWM_Hour_GPIO_Port GPIOA
 #define PWM_Sec_Pin GPIO_PIN_3
 #define PWM_Sec_GPIO_Port GPIOA
+#define SPI_NSS_Pin GPIO_PIN_4
+#define SPI_NSS_GPIO_Port GPIOA
 #define PWM_FOSC_Pin GPIO_PIN_5
 #define PWM_FOSC_GPIO_Port GPIOA
+#define DCF77_TIME_Pin GPIO_PIN_6
+#define DCF77_TIME_GPIO_Port GPIOA
 #define BATT_LEVEL_Pin GPIO_PIN_7
 #define BATT_LEVEL_GPIO_Port GPIOA
+#define DCF77_PDN_Pin GPIO_PIN_10
+#define DCF77_PDN_GPIO_Port GPIOB
 #define SHDN_24V_Pin GPIO_PIN_11
 #define SHDN_24V_GPIO_Port GPIOB
 #define LTC_CHRG_Pin GPIO_PIN_12
@@ -80,6 +86,8 @@ int __io_putchar(int ch);
 #define LTC_CHRGB15_GPIO_Port GPIOB
 #define BATT_CHECK_Pin GPIO_PIN_8
 #define BATT_CHECK_GPIO_Port GPIOA
+#define LTC_EN2_Pin GPIO_PIN_11
+#define LTC_EN2_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
 
