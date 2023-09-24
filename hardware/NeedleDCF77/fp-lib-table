@@ -3,4 +3,5 @@
   (lib (name "VFD")(type "KiCad")(uri "${KIPRJMOD}/VFD.pretty")(options "")(descr ""))
   (lib (name "DCF77_module")(type "KiCad")(uri "${KIPRJMOD}/DCF77_module.pretty")(options "")(descr ""))
   (lib (name "Molex USB C")(type "KiCad")(uri "${KIPRJMOD}/Molex USB C.pretty")(options "")(descr ""))
+  (lib (name "Logo")(type "KiCad")(uri "${KIPRJMOD}/Logo.pretty")(options "")(descr ""))
 )
