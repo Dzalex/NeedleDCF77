@@ -53,8 +53,8 @@ void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOA, SPI_NSS_Pin|BATT_CHECK_Pin|LTC_EN2_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, DCF77_PDN_Pin|SHDN_24V_Pin|LTC_CHRG_Pin|LTC_MODE_Pin
-                          |LTC_HPWR_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, DCF77_PDN_Pin|SHDN_24V_Pin|LTC_SUSP_Pin|LTC_HPWR_Pin
+                          |LTC_MODE_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : PA0 */
   GPIO_InitStruct.Pin = GPIO_PIN_0;
@@ -77,18 +77,18 @@ void MX_GPIO_Init(void)
 
   /*Configure GPIO pins : PBPin PBPin PBPin PBPin
                            PBPin */
-  GPIO_InitStruct.Pin = DCF77_PDN_Pin|SHDN_24V_Pin|LTC_CHRG_Pin|LTC_MODE_Pin
-                          |LTC_HPWR_Pin;
+  GPIO_InitStruct.Pin = DCF77_PDN_Pin|SHDN_24V_Pin|LTC_SUSP_Pin|LTC_HPWR_Pin
+                          |LTC_MODE_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PtPin */
-  GPIO_InitStruct.Pin = LTC_CHRGB15_Pin;
+  GPIO_InitStruct.Pin = LTC_CHRG_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(LTC_CHRGB15_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(LTC_CHRG_GPIO_Port, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI0_1_IRQn, 3, 0);
