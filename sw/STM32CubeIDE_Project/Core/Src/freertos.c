@@ -62,13 +62,6 @@ const osThreadAttr_t DCF77Task_attributes = {
   .stack_size = 96 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
-/* Definitions for VFDTask */
-osThreadId_t VFDTaskHandle;
-const osThreadAttr_t VFDTask_attributes = {
-  .name = "VFDTask",
-  .stack_size = 96 * 4,
-  .priority = (osPriority_t) osPriorityLow,
-};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -77,7 +70,6 @@ const osThreadAttr_t VFDTask_attributes = {
 
 void StartDefaultTask(void *argument);
 void StartDCF77Task(void *argument);
-void StartVFDTask(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -113,9 +105,6 @@ void MX_FREERTOS_Init(void) {
 
   /* creation of DCF77Task */
   DCF77TaskHandle = osThreadNew(StartDCF77Task, NULL, &DCF77Task_attributes);
-
-  /* creation of VFDTask */
-  VFDTaskHandle = osThreadNew(StartVFDTask, NULL, &VFDTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -163,24 +152,6 @@ void StartDCF77Task(void *argument)
     osDelay(1);
   }
   /* USER CODE END StartDCF77Task */
-}
-
-/* USER CODE BEGIN Header_StartVFDTask */
-/**
-* @brief Function implementing the VFDTask thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_StartVFDTask */
-void StartVFDTask(void *argument)
-{
-  /* USER CODE BEGIN StartVFDTask */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
-  /* USER CODE END StartVFDTask */
 }
 
 /* Private application code --------------------------------------------------*/
