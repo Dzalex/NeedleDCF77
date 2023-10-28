@@ -48,10 +48,10 @@
 /* USER CODE BEGIN Variables */
 
 /* USER CODE END Variables */
-/* Definitions for defaultTask */
-osThreadId_t defaultTaskHandle;
-const osThreadAttr_t defaultTask_attributes = {
-  .name = "defaultTask",
+/* Definitions for interfaceTask */
+osThreadId_t interfaceTaskHandle;
+const osThreadAttr_t interfaceTask_attributes = {
+  .name = "interfaceTask",
   .stack_size = 96 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
@@ -60,7 +60,7 @@ osThreadId_t DCF77TaskHandle;
 const osThreadAttr_t DCF77Task_attributes = {
   .name = "DCF77Task",
   .stack_size = 96 * 4,
-  .priority = (osPriority_t) osPriorityLow,
+  .priority = (osPriority_t) osPriorityAboveNormal,
 };
 
 /* Private function prototypes -----------------------------------------------*/
@@ -68,7 +68,7 @@ const osThreadAttr_t DCF77Task_attributes = {
 
 /* USER CODE END FunctionPrototypes */
 
-void StartDefaultTask(void *argument);
+void StartInterfaceTask(void *argument);
 void StartDCF77Task(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
@@ -100,8 +100,8 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
-  /* creation of defaultTask */
-  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+  /* creation of interfaceTask */
+  interfaceTaskHandle = osThreadNew(StartInterfaceTask, NULL, &interfaceTask_attributes);
 
   /* creation of DCF77Task */
   DCF77TaskHandle = osThreadNew(StartDCF77Task, NULL, &DCF77Task_attributes);
@@ -116,24 +116,22 @@ void MX_FREERTOS_Init(void) {
 
 }
 
-/* USER CODE BEGIN Header_StartDefaultTask */
+/* USER CODE BEGIN Header_StartInterfaceTask */
 /**
-  * @brief  Function implementing the defaultTask thread.
+  * @brief  Function implementing the interfaceTask thread.
   * @param  argument: Not used
   * @retval None
   */
-/* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void *argument)
+/* USER CODE END Header_StartInterfaceTask */
+void StartInterfaceTask(void *argument)
 {
-  /* USER CODE BEGIN StartDefaultTask */
+  /* USER CODE BEGIN StartInterfaceTask */
   /* Infinite loop */
-  //Use this task for needle update, as least priority task to do.
-  printf("Start!");
   for(;;)
   {
-    osDelay(1000);	//This will be the update rate
+    osDelay(1);
   }
-  /* USER CODE END StartDefaultTask */
+  /* USER CODE END StartInterfaceTask */
 }
 
 /* USER CODE BEGIN Header_StartDCF77Task */
