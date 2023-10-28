@@ -1,0 +1,85 @@
+//**                     NeedleDCF77 Notes                                  **\\
+********************************************************************************
+
+I Sch
+    1.  Na USB ulazu, nama se desilo da imamo velike nalete struje kada vežemo
+        punjač na kolo koje ima dosta kapacitivnosti ili svičere, koji mogu da 
+        povuku dosta struje pre nego što kondenzator dođe skroz sebi. Poslednji
+        put smo upotrebili NCP330 (lakše pakovanje za tebe je NCP331) i jako smo
+        zadovoljni. Ne znam koliko je realno da se spale pinovi USB-a, ali seti
+        se Apple kabla za punjenje i crnih pinova na onom malom konektoru. 
+        (Čak je i preporučeno na strani 20 DS-a za LT3558)
+    2.  Shield može da se spoji na zemlju ali je dobra praksa da se stavi kolo
+        kao na slici 1 i 1.1, kako bi se izolovala DC putanja kroz antenu.            
+    3.  Slazem se za 5k1 na CCx pinovima. 
+    4.  Napajanje za LTC3558 je preporuceno da ima 1 uF, ti si stavio 10 uF ali 
+        elko, ne bi bila loša ideja zameniti to sa keramikom i razmisliti o
+        postavljanju nekog ferrite bead-a između USB-a i napajanja (LTC pravi
+        lep ripple na napajanju kada radi). Mislim takođe da 100 nF na ulazu ne 
+        pomaže ništa :') 
+        Mnogo lep blog: https://www.murata.com/en-global/products/emc/emifil/library/knowhow/basic/chapter06-p8
+        Posebno su mi interesantni feedthru kondenzatori sa tri pina. 
+    5.  Za buck su predložili kaleme od 2.2 uH do 10 uH. Ja bih na tvom mestu
+        kupio i 10 uH i nešto između 4.7 uH i 10 uH. Može se desiti da će ripple
+        praviti problem. Ne znam koliko će struje vući sve kasnije sa njega ali
+        brine me pomalo rad u pulse skip modu kada ćeš imati ripple u kHz a ne 
+        MHz. Ostavio bih možda mesta i za ferrite bead između 3V0 i MAS6180, kao 
+        i mesta za još par kondenzatora (sa strane U3) ukoliko bude potrebno da 
+        se dekapluje šum sa napajanja. Vidim da si ostavio na MCU da se brine o 
+        režimu rada napajanja, to je dobro. 
+        Verujem da si obratio pažnju na struju zasićenja kalema, ne vidim oznaku
+        komponente koju si odabrao. Coilcraft i Taiyo Yuden mi se uvek čine kao 
+        bezbedan izbor. 
+    6.  Crtao si elektrolite na izlazima LTC3558, na strani 24 DS-a piše da se 
+        preporučuju MLCC-ovi, da li je to samo do šeme? 
+        Otvori dobro oči na derating kapacitvnosti kod MLCC-ova sa radnim 
+        naponom jer može lako da bude >-60%!
+    7.  Ispravi me ako grešim, prema formuli sa strane 26 DS-a za LTC3558, 
+        napon na izlazu je Vout = 0.8 (1 + Vup/Vdn): 
+       
+            octave:1> 0.8*(1+(820/300))
+            ans = 2.9867 # 3 V rail, tačno je. 
+       
+            octave:2> 0.8*(1+(300/62))
+            ans = 4.6710 # 5 V rail, malo podbacuje? 
+            Deluje mi kao da bi trebalo da bude 57k2? 
+            
+    8.  Note 4 DS-a za MAS6180, na strani 6, mi daje ideju da ga možda napajaš 
+        samo sa kondenzatora dok se radi hvatanje signala, on troši uA, ako 
+        staviš 100 uF do njega i PMOS iznad, možeš kadkad da ga napuniš i onda
+        pustiš da radi neko vreme sa svog napajanja. U tom slučaju bi morao da 
+        spustiš napon na PDN pinu, možda i da ga vežeš da bude stalno ON a 
+        STM neće imati problem sa malim promenama napona na TIME signalu. 
+        Još da se nadaš da LTC ne krene da svičuje na 77 kHz i da ne diže common 
+        mode noise preko zemlje :'D
+    9.  C25 se puni preko Q1, preko čega se prazni? Možda nije loše ubaciti 
+        jednu diodu kod njega.
+    10. LT1617 je jako fleksibilan sa kalemima, ne znam da li imaš običan ili -1
+        ali čini mi se da ako ti bias ne troši puno struje možeš da odeš do 
+        gornjih granica induktivnosti. Otpornici mi deluju ispravno odabrani. 
+        Pominju na kraju DS cap od 100 pF u paraleli sa tvojim R16, možda 
+        ostaviti makar kao NP? 
+    11. Sve oko U6 mi deluje skroz oke :) 
+    12. U DS za PT6312 piše da je VIH (in high) min 0.7*VDD tj. 3.5 V, kod tebe
+        SPI dolazi od MCU koji radi na 3 V, možda si već probao ovo na kod sebe
+        ali meni je red flag. 
+    13. Hardverski debounce na tasteru je za pi*** :) (Slika 2, proverena šema)
+II PCB
+    1.  Nije moralo da bude na dva sloja, ali cenim pošten izazov :D 
+    2.  Mislim da je layout ispao super u odnosu na ograničenja. Lično ne volim
+        da stavljam kalem sa druge strane ploče zato što će kroz vije stalno da 
+        piče impulsi i do pola ampera. Možda bih pojačao trejsove oko dva glavna
+        kalema na U1, dodao još vija, pojačao stiching poligona mase gde god je
+        moguće jer su dosta isprekidane. 
+    3.  Trejs za 3V0 svraća na sve čipove dok stigne do najosetljivijeg U3. Tu 
+        će svako da doda po još malo šuma i da napravi mnogo padova napona do
+        druge ivice ploče. Mislim da na BOT imaš mesta da po dnu provučeš još
+        jedan trejs za 3V0 i da to daš samo U3. (Ako pomeriš 5V0, sl. tačka)
+    4.  Izgleda mi kao i da 5V0 možeš uz malo masiranja da provučeš uz gornju 
+        ivicu ploče do U4 i ostalih ako SWDIO konektor padne ispod J5. 
+        Predlog 3 bi ti ukinuo debeli trejs u BOT sloju za 3V0 koji kreće ispod
+        MCU i ostavio mesta za manevar. 
+    5.  PWM_Fosc se naslonila uz trejs za DCF77_TIME kao da mu treba još šuma :D
+    6.  Mršavo mi deluje ovaj trejs za VBUS, vidim da je 0.3 mm ali samo jedna
+        vija, možda dve, biće tu struje kada se puni baterija. 
+    6.  Ništa mi više ne upada u oči, 3D izgleda lepo! 
