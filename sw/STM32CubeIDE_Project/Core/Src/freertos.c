@@ -26,6 +26,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stdio.h"
+#include "needle.h"
 
 /* USER CODE END Includes */
 
@@ -144,10 +145,27 @@ void StartInterfaceTask(void *argument)
 void StartDCF77Task(void *argument)
 {
   /* USER CODE BEGIN StartDCF77Task */
+	uint16_t second, minute, hour;
+	EnableAllNeedles();
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+	SetSecond(second);
+	SetMinute(minute);
+
+	second++; minute++;
+	if(second > 59)
+	{
+		second = 0;
+		minute = 0;
+	}
+
+	SetHour(hour);
+
+	hour++;
+	if(hour > 12) hour = 0;
+
+    osDelay(1000);
   }
   /* USER CODE END StartDCF77Task */
 }
