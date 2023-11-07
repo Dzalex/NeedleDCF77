@@ -14,8 +14,8 @@
 void EnableAllNeedles(void);
 void DisableAllNeedles(void);
 
-void SetSecond(uint8_t seconds);
-void SetMinute(uint8_t minute);
-void SetHour(uint8_t hour);
+void SetSecond(RTC_TimeTypeDef time);
+void SetMinute(RTC_TimeTypeDef time);
+void SetHour(RTC_TimeTypeDef time);
 
 #endif /* INC_NEEDLE_H_ */

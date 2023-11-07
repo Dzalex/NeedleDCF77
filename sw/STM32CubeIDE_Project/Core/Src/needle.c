@@ -24,12 +24,12 @@ void DisableAllNeedles(void)
 	HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3); //Stop Hour
 }
 
-void SetSecond(uint8_t seconds)
+void SetSecond(RTC_TimeTypeDef time)
 {
 	static uint16_t secondsPulseWidth;
-	if(seconds >= 0 && seconds < 60)
+	if(time.Seconds < 60)
 	{
-		secondsPulseWidth = (INT16_MAX / 59) * seconds ;
+		secondsPulseWidth = (INT16_MAX / 59) * time.Seconds ;
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_4, secondsPulseWidth);
 	}
 	else
@@ -38,12 +38,12 @@ void SetSecond(uint8_t seconds)
 	}
 }
 
-void SetMinute(uint8_t minute)
+void SetMinute(RTC_TimeTypeDef time)
 {
 	static uint16_t minutePulseWidth;
-	if(minute >= 0 && minute < 60)
+	if(time.Minutes < 60)
 	{
-		minutePulseWidth = (INT16_MAX / 59) * minute ;
+		minutePulseWidth = (INT16_MAX / 59) * time.Minutes ;
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, minutePulseWidth);
 	}
 	else
@@ -52,12 +52,12 @@ void SetMinute(uint8_t minute)
 	}
 }
 
-void SetHour(uint8_t hour)
+void SetHour(RTC_TimeTypeDef time)
 {
 	static uint16_t hourPulseWidth;
-	if(hour >= 0 && hour < 60)
+	if(time.Hours < 13)
 	{
-		hourPulseWidth = (INT16_MAX / 12) * hour ;
+		hourPulseWidth = (INT16_MAX / 12) * time.Hours ;
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, hourPulseWidth);
 	}
 	else
