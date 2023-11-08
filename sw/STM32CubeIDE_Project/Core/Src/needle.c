@@ -29,7 +29,7 @@ void SetSecond(RTC_TimeTypeDef time)
 	static uint16_t secondsPulseWidth;
 	if(time.Seconds < 60)
 	{
-		secondsPulseWidth = (INT16_MAX / 59) * time.Seconds ;
+		secondsPulseWidth = (UINT16_MAX / 59) * time.Seconds ;
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_4, secondsPulseWidth);
 	}
 	else
@@ -43,7 +43,7 @@ void SetMinute(RTC_TimeTypeDef time)
 	static uint16_t minutePulseWidth;
 	if(time.Minutes < 60)
 	{
-		minutePulseWidth = (INT16_MAX / 59) * time.Minutes ;
+		minutePulseWidth = (UINT16_MAX / 59) * time.Minutes ;
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, minutePulseWidth);
 	}
 	else
@@ -57,7 +57,7 @@ void SetHour(RTC_TimeTypeDef time)
 	static uint16_t hourPulseWidth;
 	if(time.Hours < 13)
 	{
-		hourPulseWidth = (INT16_MAX / 12) * time.Hours ;
+		hourPulseWidth = (UINT16_MAX / 12) * time.Hours ;
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, hourPulseWidth);
 	}
 	else
