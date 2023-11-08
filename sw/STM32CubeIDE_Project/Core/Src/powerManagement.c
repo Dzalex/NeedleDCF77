@@ -46,6 +46,16 @@ void LTC_ReactivateCharging(void)
 	HAL_GPIO_WritePin(LTC_SUSP_GPIO_Port, LTC_SUSP_Pin, GPIO_PIN_RESET);
 }
 
+chargeStatus LTC_GetChargeStatus(void)
+{
+	// TODO: Implement Charging status --> for NTC_FAULT, BAD_BATTERY
+	if(GPIO_PIN_RESET == HAL_GPIO_ReadPin(LTC_CHRG_GPIO_Port, LTC_CHRG_Pin))
+	{
+		return CHARGING;
+	}
+	return NOT_CHARGING;
+}
+
 void LT1617_EnableNeg24VRail(void)
 {
 	HAL_GPIO_WritePin(SHDN_24V_GPIO_Port, SHDN_24V_Pin, GPIO_PIN_SET);

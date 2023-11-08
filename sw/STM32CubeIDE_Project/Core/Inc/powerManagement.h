@@ -9,6 +9,9 @@
 #define INC_POWERMANAGEMENT_H_
 #include "main.h"
 
+
+typedef enum chargeStatus { CHARGING, NOT_CHARGING, NTC_FAULT, BAD_BATTERY } chargeStatus;
+
 void LTC_Enable4VoltRail(void);
 void LTC_Disable4VoltRail(void);
 void LTC_SetBurstMode(void);
@@ -17,8 +20,7 @@ void LTC_EnableHighPwrCharge(void);
 void LTC_DisableHighPwrCharge(void);
 void LTC_SuspendCharging(void);
 void LTC_ReactivateCharging(void);
-
-// TODO: Implement Charging status -->
+chargeStatus LTC_GetChargeStatus(void);
 
 void LT1617_EnableNeg24VRail(void);
 void LT1617_DisableNeg24VRail(void);
