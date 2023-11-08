@@ -45,3 +45,14 @@ void LTC_ReactivateCharging(void)
 {
 	HAL_GPIO_WritePin(LTC_SUSP_GPIO_Port, LTC_SUSP_Pin, GPIO_PIN_RESET);
 }
+
+void LT1617_EnableNeg24VRail(void)
+{
+	HAL_GPIO_WritePin(SHDN_24V_GPIO_Port, SHDN_24V_Pin, GPIO_PIN_SET);
+}
+
+void LT1617_DisableNeg24VRail(void)
+{
+	HAL_GPIO_WritePin(SHDN_24V_GPIO_Port, SHDN_24V_Pin, GPIO_PIN_RESET);
+}
+

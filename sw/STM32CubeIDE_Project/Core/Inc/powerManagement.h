@@ -20,5 +20,7 @@ void LTC_ReactivateCharging(void);
 
 // TODO: Implement Charging status -->
 
+void LT1617_EnableNeg24VRail(void);
+void LT1617_DisableNeg24VRail(void);
 
 #endif /* INC_POWERMANAGEMENT_H_ */
