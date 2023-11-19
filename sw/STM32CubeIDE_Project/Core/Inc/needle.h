@@ -11,11 +11,12 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
-void EnableAllNeedles(void);
-void DisableAllNeedles(void);
+void NDL_EnableAllNeedles(void);
+void NDL_DisableAllNeedles(void);
 
-void SetSecond(RTC_TimeTypeDef time);
-void SetMinute(RTC_TimeTypeDef time);
-void SetHour(RTC_TimeTypeDef time);
+void NDL_SetAllNeedles(RTC_TimeTypeDef time);
+void NDL_SetSecond(RTC_TimeTypeDef time);
+void NDL_SetMinute(RTC_TimeTypeDef time);
+void NDL_SetHour(RTC_TimeTypeDef time);
 
 #endif /* INC_NEEDLE_H_ */
