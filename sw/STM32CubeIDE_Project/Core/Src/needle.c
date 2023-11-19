@@ -66,6 +66,10 @@ static uint16_t calculateMinutePulseWidth(RTC_TimeTypeDef time)
 
 static uint16_t calculateHourPulseWidth(RTC_TimeTypeDef time)
 {
+	if (time.Hours == 12)
+	{
+		return 0; // Special case, 12AM/PM is first on Hour needle.
+	}
 	uint16_t hourPulseWidth = (__HAL_TIM_GET_AUTORELOAD(&htim2) / 12) * time.Hours;
 	return hourPulseWidth;
 }
