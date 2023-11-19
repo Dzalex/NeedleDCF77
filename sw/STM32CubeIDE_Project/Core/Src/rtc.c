@@ -44,7 +44,7 @@ void MX_RTC_Init(void)
   /** Initialize RTC Only
   */
   hrtc.Instance = RTC;
-  hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
+  hrtc.Init.HourFormat = RTC_HOURFORMAT_12;
   hrtc.Init.AsynchPrediv = 127;
   hrtc.Init.SynchPrediv = 255;
   hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
@@ -62,21 +62,22 @@ void MX_RTC_Init(void)
 
   /** Initialize RTC and set the Time and Date
   */
-  sTime.Hours = 0x0;
-  sTime.Minutes = 0x0;
-  sTime.Seconds = 0x0;
+  sTime.Hours = 12;
+  sTime.Minutes = 31;
+  sTime.Seconds = 0;
+  sTime.TimeFormat = RTC_HOURFORMAT12_AM;
   sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
   sTime.StoreOperation = RTC_STOREOPERATION_RESET;
-  if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK)
+  if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BIN) != HAL_OK)
   {
     Error_Handler();
   }
   sDate.WeekDay = RTC_WEEKDAY_MONDAY;
   sDate.Month = RTC_MONTH_JANUARY;
-  sDate.Date = 0x1;
-  sDate.Year = 0x0;
+  sDate.Date = 1;
+  sDate.Year = 0;
 
-  if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BCD) != HAL_OK)
+  if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BIN) != HAL_OK)
   {
     Error_Handler();
   }
