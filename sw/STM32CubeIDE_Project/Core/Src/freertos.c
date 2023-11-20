@@ -26,6 +26,9 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stdio.h"
+#include "rtc.h"
+#include "interface.h"
+#include "needle.h"
 
 /* USER CODE END Includes */
 
@@ -61,6 +64,11 @@ const osThreadAttr_t DCF77Task_attributes = {
   .name = "DCF77Task",
   .stack_size = 96 * 4,
   .priority = (osPriority_t) osPriorityAboveNormal,
+};
+/* Definitions for interfaceEvent */
+osEventFlagsId_t interfaceEventHandle;
+const osEventFlagsAttr_t interfaceEvent_attributes = {
+  .name = "interfaceEvent"
 };
 
 /* Private function prototypes -----------------------------------------------*/
@@ -110,6 +118,10 @@ void MX_FREERTOS_Init(void) {
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
 
+  /* Create the event(s) */
+  /* creation of interfaceEvent */
+  interfaceEventHandle = osEventFlagsNew(&interfaceEvent_attributes);
+
   /* USER CODE BEGIN RTOS_EVENTS */
   /* add events, ... */
   /* USER CODE END RTOS_EVENTS */
@@ -126,11 +138,36 @@ void MX_FREERTOS_Init(void) {
 void StartInterfaceTask(void *argument)
 {
   /* USER CODE BEGIN StartInterfaceTask */
+	uint32_t receivedInterfaceFlag = 0;
+	RTC_TimeTypeDef currentTime = {0};
+	RTC_DateTypeDef currentDate = {0};
+
+	NDL_EnableAllNeedles();
+
   /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
+	for(;;)
+	{
+		receivedInterfaceFlag = osEventFlagsWait(interfaceEventHandle, 1, osFlagsWaitAny, osWaitForever);
+		switch(receivedInterfaceFlag)
+		{
+		case INTERFACE_SECOND_FLAG:
+			HAL_RTC_GetTime(&hrtc, &currentTime, RTC_FORMAT_BIN);
+			HAL_RTC_GetDate(&hrtc, &currentDate, RTC_FORMAT_BIN);
+			NDL_SetAllNeedles(currentTime);
+			break;
+		case INTERFACE_2AM_FLAG:
+
+			break;
+		case INTERFACE_BUTTON_PRESS_FLAG:
+
+			break;
+		case INTERFACE_BUTTON_HOLD_FLAG:
+
+		break;
+		}
+
+		osDelay(1);
+	}
   /* USER CODE END StartInterfaceTask */
 }
 
