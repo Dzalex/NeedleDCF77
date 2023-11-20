@@ -29,6 +29,7 @@
 #include "rtc.h"
 #include "interface.h"
 #include "needle.h"
+#include "powerManagement.h"
 
 /* USER CODE END Includes */
 
@@ -155,6 +156,7 @@ void StartInterfaceTask(void *argument)
 	RTC_DateTypeDef currentDate = {0};
 
 	NDL_EnableAllNeedles();
+	LTC_SetBurstMode();
 
   /* Infinite loop */
 	for(;;)
