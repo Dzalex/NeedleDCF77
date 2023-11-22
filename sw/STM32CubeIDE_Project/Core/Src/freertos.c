@@ -85,12 +85,13 @@ void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 /* USER CODE BEGIN PREPOSTSLEEP */
 __weak void PreSleepProcessing(uint32_t *ulExpectedIdleTime)
 {
-/* place for user code */
+	HAL_SuspendTick();
+	HAL_PWR_EnterSLEEPMode(PWR_MAINREGULATOR_ON, PWR_SLEEPENTRY_WFI);
 }
 
 __weak void PostSleepProcessing(uint32_t *ulExpectedIdleTime)
 {
-/* place for user code */
+	HAL_ResumeTick();
 }
 /* USER CODE END PREPOSTSLEEP */
 
@@ -199,6 +200,7 @@ void StartDCF77Task(void *argument)
   for(;;)
   {
     osDelay(1);
+    osThreadSuspend(DCF77TaskHandle);
   }
   /* USER CODE END StartDCF77Task */
 }
