@@ -184,7 +184,8 @@ void StartDCF77Task(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+	  osThreadSuspend(DCF77TaskHandle);
+	  osDelay(1);
   }
   /* USER CODE END StartDCF77Task */
 }
