@@ -31,7 +31,7 @@ const uint8_t VFD_TEST_MODE = 0x08;
 
 
 /* COMMAND 3: ADDRESS SETTING COMMANDS 8 */
-const uint8_t VFD_ADDRESS_COMAND_BASE = 0xC0;	/* Address: 0x00 to 15
+const uint8_t VFD_ADDRESS_COMAND_BASE = 0xC0;	/* Address: 0x00 to 15 */
 
 
 /* COMMAND 4: DISPLAY CONTROL COMMANDS */
@@ -40,6 +40,7 @@ const uint8_t VFD_OFF = 0x80;
 
 
 void VFD_PowerOnAndInitialize();
+void VFD_PowerOffAndDeinitialize();
 
 
 
