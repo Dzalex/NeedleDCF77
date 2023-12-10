@@ -8,7 +8,7 @@
 #ifndef INC_VFD_FONT_H_
 #define INC_VFD_FONT_H_
 
-const uint8_t fontForVFD[] =
+uint8_t fontForVFD[] =
 {
 	0b11001111,		//0
 	0b00000110,		//1

@@ -21,7 +21,6 @@ void VFD_PowerOnAndInitialize()
 {
 	//Turn on 4V
 	LTC_Enable4VoltRail();
-	//Activate SPI module from HAL - if decidet to use MSP_deInit -- not for now
 
 	//Activate PWM Fosc
 	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
@@ -54,17 +53,35 @@ void VFD_Command(uint8_t command)
 {
 	HAL_SPI_Transmit(&hspi1, &command, 1, 100);
 	__HAL_SPI_DISABLE(&hspi1);
+	osDelay(1);
 }
 
 void VFD_Clear()
 {
 	VFD_Command(VFD_ADDRESS_COMAND_BASE | 0x00);
+	uint8_t no_data = 0x00;
 
 	for(uint8_t i = 0; i < 0x16; i++)
 	{
-		HAL_SPI_Transmit(&hspi1, 0x00, 1, 100);
+		HAL_SPI_Transmit(&hspi1, &no_data, 1, 100);
 	}
 
 	__HAL_SPI_DISABLE(&hspi1);
+	osDelay(1);
+}
+
+void VFD_Test()
+{
+	VFD_Command(VFD_DATA_SETTING_WRITE_TO_DISPLAY_MODE);
+
+	VFD_Command(VFD_ADDRESS_COMAND_BASE | 0x00);
+
+	HAL_SPI_Transmit(&hspi1, fontForVFD, 10, 100);
+
+	__HAL_SPI_DISABLE(&hspi1);
+
+	VFD_Command(VFD_DISPLAY_MODE_9DIG_13SEG);
+
+	VFD_Command(VFD_BRIGHTNESS_BASE | 0x03);
 }
 
