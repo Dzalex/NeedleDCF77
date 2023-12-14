@@ -88,14 +88,20 @@ void VFD_Test()
 {
 	VFD_Command(VFD_DATA_SETTING_WRITE_TO_DISPLAY_MODE);
 
-	VFD_Command(VFD_ADDRESS_COMAND_BASE | 0x00);
+	VFD_AddressSettingCommand(0);
 
-	HAL_SPI_Transmit(&hspi1, fontForVFD, 10, 100);
+	uint8_t allOff = 0x00;
 
-	__HAL_SPI_DISABLE(&hspi1);
+	for(uint8_t i = 0; i < 10; i++)
+	{
+		HAL_SPI_Transmit(&hspi1, &fontForVFD[i], 1, 100);
+		HAL_SPI_Transmit(&hspi1, &allOff, 1, 100);
+	}
+
+	VFD_DeactivateStrobe();
 
 	VFD_Command(VFD_DISPLAY_MODE_9DIG_13SEG);
 
-	VFD_Command(VFD_BRIGHTNESS_BASE | 0x03);
+	VFD_Command(VFD_BRIGHTNESS_BASE | 0x04);
 }
 
