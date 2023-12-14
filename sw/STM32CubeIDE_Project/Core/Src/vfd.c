@@ -51,23 +51,37 @@ void VFD_PowerOffAndDeinitialize()
 
 void VFD_Command(uint8_t command)
 {
+	VFD_ActivateStrobe();
 	HAL_SPI_Transmit(&hspi1, &command, 1, 100);
-	__HAL_SPI_DISABLE(&hspi1);
-	osDelay(1);
+	VFD_DeactivateStrobe();
+}
+
+void VFD_AddressSettingCommand(uint8_t address)
+{
+	VFD_ActivateStrobe();
+	uint8_t addressSettingCommand = VFD_ADDRESS_COMAND_BASE + address;
+	HAL_SPI_Transmit(&hspi1, &addressSettingCommand, 1, 100);
 }
 
 void VFD_Clear()
 {
-	VFD_Command(VFD_ADDRESS_COMAND_BASE | 0x00);
+	VFD_AddressSettingCommand(0);
 	uint8_t no_data = 0x00;
 
 	for(uint8_t i = 0; i < 0x16; i++)
 	{
 		HAL_SPI_Transmit(&hspi1, &no_data, 1, 100);
 	}
+}
 
-	__HAL_SPI_DISABLE(&hspi1);
-	osDelay(1);
+void VFD_ActivateStrobe()
+{
+	HAL_GPIO_WritePin(VFD_STB_GPIO_Port, VFD_STB_Pin, GPIO_PIN_RESET);
+}
+
+void VFD_DeactivateStrobe()
+{
+	HAL_GPIO_WritePin(VFD_STB_GPIO_Port, VFD_STB_Pin, GPIO_PIN_SET);
 }
 
 void VFD_Test()
