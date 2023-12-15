@@ -12,6 +12,26 @@
 #include "vfd_font.h"
 #include "powerManagement.h"
 
+const uint8_t PT6312_BYTES_PER_GRID = 2;
+const uint8_t VFD_GRIDS = 9;
+const uint8_t VFD_SEGMENTS = 8;
+
+const uint8_t VFD_DISPLAY_MODE_9DIG_13SEG = 0x05;
+const uint8_t VFD_DISPLAY_MODE_11DIG_11SEG = 0x07;
+
+const uint8_t VFD_DATA_SETTING_WRITE_TO_DISPLAY_MODE = 0x40;
+
+const uint8_t VFD_INCREMENT_ADDRESS = 0x00;
+const uint8_t VFD_FIXED_ADDRESS = 0x04;
+
+const uint8_t VFD_TEST_MODE = 0x08;
+
+const uint8_t VFD_ADDRESS_COMAND_BASE = 0xC0;
+
+const uint8_t VFD_BRIGHTNESS_BASE = 0x88;
+const uint8_t VFD_OFF = 0x80;
+
+
 /* Forward declaration of local functions */
 void VFD_Command(uint8_t command);
 void VFD_Clear();

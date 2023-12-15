@@ -11,33 +11,33 @@
 #include "main.h"
 
 /* General constants for PT6312 */
-static const uint8_t PT6312_BYTES_PER_GRID = 2;
-static const uint8_t VFD_GRIDS = 9;
-static const uint8_t VFD_SEGMENTS = 8;
+extern const uint8_t PT6312_BYTES_PER_GRID;
+extern const uint8_t VFD_GRIDS;
+extern const uint8_t VFD_SEGMENTS;
 
 /* COMMAND 1: DISPLAY MODE SETTING COMMANDS */
-static const uint8_t VFD_DISPLAY_MODE_9DIG_13SEG = 0x05;
-static const uint8_t VFD_DISPLAY_MODE_11DIG_11SEG = 0x07;
+extern const uint8_t VFD_DISPLAY_MODE_9DIG_13SEG;
+extern const uint8_t VFD_DISPLAY_MODE_11DIG_11SEG;
 
 
 /* COMMAND 2: DATA SETTING COMMANDS */
-static const uint8_t VFD_DATA_SETTING_WRITE_TO_DISPLAY_MODE = 0x40;	/* Increment address after data has been written */
+extern const uint8_t VFD_DATA_SETTING_WRITE_TO_DISPLAY_MODE0;	/* Increment address after data has been written */
 
 /* Address increment mode settings (Display mode) - use as options | */
-static const uint8_t VFD_INCREMENT_ADDRESS = 0x00;
-static const uint8_t VFD_FIXED_ADDRESS = 0x04;
+extern const uint8_t VFD_INCREMENT_ADDRESS;
+extern const uint8_t VFD_FIXED_ADDRESS;
 
 /* Mode settings */
-static const uint8_t VFD_TEST_MODE = 0x08;
+extern const uint8_t VFD_TEST_MODE;
 
 
 /* COMMAND 3: ADDRESS SETTING COMMANDS 8 */
-static const uint8_t VFD_ADDRESS_COMAND_BASE = 0xC0;	/* Address: 0x00 to 15 */
+extern const uint8_t VFD_ADDRESS_COMAND_BASE;	/* Address: 0x00 to 15 */
 
 
 /* COMMAND 4: DISPLAY CONTROL COMMANDS */
-static const uint8_t VFD_BRIGHTNESS_BASE = 0x88;	/* Brightness 0 to 7 */
-static const uint8_t VFD_OFF = 0x80;
+extern const uint8_t VFD_BRIGHTNESS_BASE;	/* Brightness 0 to 7 */
+extern const uint8_t VFD_OFF;
 
 
 void VFD_PowerOnAndInitialize();
