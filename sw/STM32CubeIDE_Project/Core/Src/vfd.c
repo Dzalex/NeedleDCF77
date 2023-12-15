@@ -15,6 +15,8 @@
 /* Forward declaration of local functions */
 void VFD_Command(uint8_t command);
 void VFD_Clear();
+void VFD_ActivateStrobe();
+void VFD_DeactivateStrobe();
 
 
 void VFD_PowerOnAndInitialize()
