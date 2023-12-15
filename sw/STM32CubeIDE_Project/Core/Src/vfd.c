@@ -33,6 +33,8 @@ void VFD_PowerOnAndInitialize()
 	//Delay 200ms
 	osDelay(200);
 
+	__HAL_SPI_ENABLE(&hspi1);
+
 	//Set Command 2 to write data
 	VFD_Command(VFD_DATA_SETTING_WRITE_TO_DISPLAY_MODE | VFD_INCREMENT_ADDRESS);
 
