@@ -19,7 +19,7 @@ const uint8_t VFD_FONT_NUMBERS[] =
 	0x7d,		//6
 	0x07,		//7
 	0x7f,		//8
-	0x67		//9
+	0x6f		//9
 };
 
 const uint8_t VFD_FONT_LETTERS[] =
