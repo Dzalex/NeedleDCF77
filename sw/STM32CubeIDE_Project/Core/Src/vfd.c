@@ -104,7 +104,20 @@ void VFD_Clear()
 
 void VFD_PrintDigitAtPosition(uint8_t digit, uint8_t possition)
 {
+	if(possition > VFD_GRIDS)
+		return;
+
+	if(digit > 9)
+		return;
+
+	uint8_t addressForPossition = possition * PT6312_BYTES_PER_GRID;
+
 	VFD_Command(VFD_DATA_SETTING_WRITE_TO_DISPLAY_MODE | VFD_FIXED_ADDRESS);
+	VFD_AddressSettingCommand(addressForPossition);
+	VFD_WriteDataToDsiplay((uint8_t *)&VFD_FONT_NUMBERS[digit], 1);
+
+	VFD_Command(VFD_DISPLAY_MODE_9DIG_13SEG);
+	VFD_Command(VFD_BRIGHTNESS_BASE | VFD_SELECTED_BRIGHTNESS);
 
 }
 
