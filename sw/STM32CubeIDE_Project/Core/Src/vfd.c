@@ -75,6 +75,32 @@ void VFD_PowerOffAndDeinitialize()
 
 }
 
+void VFD_ShowDate(RTC_DateTypeDef date)
+{
+	uint8_t dateDataBuffer[8];
+
+	// Fill day positions
+	dateDataBuffer[0] = VFD_FONT_NUMBERS[date.Date / 10]; 						// First position, can be 0, 1, 2, 3
+	dateDataBuffer[1] = VFD_FONT_NUMBERS[date.Date % 10] | VFD_ACTIVATE_DOT; 	//Last digit of date plus Dot
+
+	// Fill Monts positions
+	dateDataBuffer[2] = VFD_FONT_NUMBERS[date.Month / 10];
+	dateDataBuffer[3] = VFD_FONT_NUMBERS[date.Month % 10] | VFD_ACTIVATE_DOT;
+
+	// Fill Year
+	dateDataBuffer[4] = VFD_FONT_NUMBERS[2];
+	dateDataBuffer[5] = VFD_FONT_NUMBERS[0]; // Year 20xx in next decade use 1
+	dateDataBuffer[6] = VFD_FONT_NUMBERS[date.Year / 10];
+	dateDataBuffer[7] = VFD_FONT_NUMBERS[date.Year % 10] | VFD_ACTIVATE_DOT;
+
+	VFD_Command(VFD_DATA_SETTING_WRITE_TO_DISPLAY_MODE);
+	VFD_AddressSettingCommand(0);
+	VFD_WriteDataToDsiplay(dateDataBuffer, sizeof(dateDataBuffer));
+
+	VFD_Command(VFD_DISPLAY_MODE_9DIG_13SEG);
+	VFD_Command(VFD_BRIGHTNESS_BASE | VFD_SELECTED_BRIGHTNESS);
+}
+
 void VFD_Command(uint8_t command)
 {
 	VFD_ActivateStrobe();
