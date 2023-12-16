@@ -44,6 +44,8 @@ extern const uint8_t VFD_OFF;
 void VFD_PowerOnAndInitialize();
 void VFD_PowerOffAndDeinitialize();
 
+void VFD_PrintCharacterAtPosition(char digit, uint8_t possition);
+
 void VFD_Test();
 
 
