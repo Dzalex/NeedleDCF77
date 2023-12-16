@@ -14,6 +14,7 @@
 extern const uint8_t PT6312_BYTES_PER_GRID;
 extern const uint8_t VFD_GRIDS;
 extern const uint8_t VFD_SEGMENTS;
+extern const uint8_t VFD_SELECTED_BRIGHTNESS;
 
 /* COMMAND 1: DISPLAY MODE SETTING COMMANDS */
 extern const uint8_t VFD_DISPLAY_MODE_9DIG_13SEG;

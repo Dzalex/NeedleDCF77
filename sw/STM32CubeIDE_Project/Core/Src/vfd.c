@@ -15,6 +15,7 @@
 const uint8_t PT6312_BYTES_PER_GRID = 2;
 const uint8_t VFD_GRIDS = 9;
 const uint8_t VFD_SEGMENTS = 8;
+const uint8_t VFD_SELECTED_BRIGHTNESS = 0x03;
 
 const uint8_t VFD_DISPLAY_MODE_9DIG_13SEG = 0x05;
 const uint8_t VFD_DISPLAY_MODE_11DIG_11SEG = 0x07;
@@ -66,7 +67,7 @@ void VFD_PowerOnAndInitialize()
 	VFD_Command(VFD_DISPLAY_MODE_9DIG_13SEG);
 
 	//Set Command 4 to turn on display with brightness
-	VFD_Command(VFD_BRIGHTNESS_BASE | 0x03);
+	VFD_Command(VFD_BRIGHTNESS_BASE | VFD_SELECTED_BRIGHTNESS);
 }
 
 void VFD_PowerOffAndDeinitialize()
