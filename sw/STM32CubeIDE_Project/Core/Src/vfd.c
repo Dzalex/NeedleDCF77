@@ -35,6 +35,7 @@ const uint8_t VFD_OFF = 0x80;
 
 /* Forward declaration of local functions */
 void VFD_Command(uint8_t command);
+void VFD_AddressSettingCommand(uint8_t address);
 void VFD_Clear();
 void VFD_WriteDataToDsiplay(uint8_t *data, uint8_t size);
 void VFD_ActivateStrobe();
