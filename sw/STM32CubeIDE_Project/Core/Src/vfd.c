@@ -97,6 +97,10 @@ void VFD_Clear()
 	{
 		HAL_SPI_Transmit(&hspi1, &no_data, 1, 100);
 	}
+
+	VFD_DeactivateStrobe();
+}
+
 void VFD_PrintDigitAtPosition(uint8_t digit, uint8_t possition)
 {
 	VFD_Command(VFD_DATA_SETTING_WRITE_TO_DISPLAY_MODE | VFD_FIXED_ADDRESS);
