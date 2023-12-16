@@ -35,6 +35,7 @@ const uint8_t VFD_OFF = 0x80;
 /* Forward declaration of local functions */
 void VFD_Command(uint8_t command);
 void VFD_Clear();
+void VFD_WriteDataToDsiplay(uint8_t *data, uint8_t size);
 void VFD_ActivateStrobe();
 void VFD_DeactivateStrobe();
 
@@ -96,6 +97,42 @@ void VFD_Clear()
 	{
 		HAL_SPI_Transmit(&hspi1, &no_data, 1, 100);
 	}
+void VFD_PrintDigitAtPosition(uint8_t digit, uint8_t possition)
+{
+	VFD_Command(VFD_DATA_SETTING_WRITE_TO_DISPLAY_MODE | VFD_FIXED_ADDRESS);
+
+}
+
+void VFD_PrintCharacterAtPosition(char digit, uint8_t possition)
+{
+	if(possition > VFD_GRIDS)
+		return;
+
+	if(digit < 'a' || digit > 'z')
+		return;
+
+	uint8_t addressForPossition = possition * PT6312_BYTES_PER_GRID;
+	uint8_t characterToWrite = digit - 'a';
+
+	VFD_Command(VFD_DATA_SETTING_WRITE_TO_DISPLAY_MODE);
+	VFD_AddressSettingCommand(addressForPossition);
+	VFD_WriteDataToDsiplay((uint8_t *)&VFD_FONT_LETTERS[characterToWrite], 1);
+
+	VFD_Command(VFD_DISPLAY_MODE_9DIG_13SEG);
+	VFD_Command(VFD_BRIGHTNESS_BASE | VFD_SELECTED_BRIGHTNESS);
+}
+
+void VFD_WriteDataToDsiplay(uint8_t *data, uint8_t size)
+{
+	uint8_t allOff = 0x00;
+
+	for(uint8_t i = 0; i < size; i++)
+	{
+		HAL_SPI_Transmit(&hspi1, (uint8_t *)data, 1, 100);
+		HAL_SPI_Transmit(&hspi1, &allOff, 1, 100);
+	}
+
+	VFD_DeactivateStrobe();
 }
 
 void VFD_ActivateStrobe()
