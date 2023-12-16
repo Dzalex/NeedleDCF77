@@ -23,9 +23,9 @@ const uint8_t VFD_DISPLAY_MODE_11DIG_11SEG = 0x07;
 const uint8_t VFD_DATA_SETTING_WRITE_TO_DISPLAY_MODE = 0x40;
 
 const uint8_t VFD_INCREMENT_ADDRESS = 0x00;
-const uint8_t VFD_FIXED_ADDRESS = 0x04;
+const uint8_t VFD_FIXED_ADDRESS = 0x02;
 
-const uint8_t VFD_TEST_MODE = 0x08;
+const uint8_t VFD_TEST_MODE = 0x04;
 
 const uint8_t VFD_ADDRESS_COMAND_BASE = 0xC0;
 
