@@ -52,7 +52,4 @@ void VFD_PrintCharacterAtPosition(char digit, uint8_t possition);
 void VFD_Test();
 
 
-
-
-
 #endif /* INC_VFD_H_ */

@@ -13,6 +13,7 @@
 #include "powerManagement.h"
 
 const uint8_t PT6312_BYTES_PER_GRID = 2;
+const uint8_t PT6312_MEMORY_SIZE = 0x16;
 const uint8_t VFD_GRIDS = 9;
 const uint8_t VFD_SEGMENTS = 8;
 const uint8_t VFD_SELECTED_BRIGHTNESS = 0x03;
@@ -31,6 +32,8 @@ const uint8_t VFD_ADDRESS_COMAND_BASE = 0xC0;
 
 const uint8_t VFD_BRIGHTNESS_BASE = 0x88;
 const uint8_t VFD_OFF = 0x80;
+
+const uint32_t SPI_TIMEOUT = 100;
 
 
 /* Forward declaration of local functions */
@@ -108,7 +111,7 @@ void VFD_ShowDate(RTC_DateTypeDef date)
 void VFD_Command(uint8_t command)
 {
 	VFD_ActivateStrobe();
-	HAL_SPI_Transmit(&hspi1, &command, 1, 100);
+	HAL_SPI_Transmit(&hspi1, &command, 1, SPI_TIMEOUT);
 	VFD_DeactivateStrobe();
 }
 
@@ -116,7 +119,7 @@ void VFD_AddressSettingCommand(uint8_t address)
 {
 	VFD_ActivateStrobe();
 	uint8_t addressSettingCommand = VFD_ADDRESS_COMAND_BASE + address;
-	HAL_SPI_Transmit(&hspi1, &addressSettingCommand, 1, 100);
+	HAL_SPI_Transmit(&hspi1, &addressSettingCommand, 1, SPI_TIMEOUT);
 }
 
 void VFD_Clear()
@@ -124,9 +127,9 @@ void VFD_Clear()
 	VFD_AddressSettingCommand(0);
 	uint8_t no_data = 0x00;
 
-	for(uint8_t i = 0; i < 0x16; i++)
+	for(uint8_t i = 0; i < PT6312_MEMORY_SIZE; i++)
 	{
-		HAL_SPI_Transmit(&hspi1, &no_data, 1, 100);
+		HAL_SPI_Transmit(&hspi1, &no_data, 1, SPI_TIMEOUT);
 	}
 
 	VFD_DeactivateStrobe();
@@ -176,8 +179,8 @@ void VFD_WriteDataToDsiplay(uint8_t *data, uint8_t size)
 
 	for(uint8_t i = 0; i < size; i++)
 	{
-		HAL_SPI_Transmit(&hspi1, (uint8_t *)data + i, 1, 100);
-		HAL_SPI_Transmit(&hspi1, &allOff, 1, 100);
+		HAL_SPI_Transmit(&hspi1, ( (uint8_t *)data + i ), 1, SPI_TIMEOUT);
+		HAL_SPI_Transmit(&hspi1, &allOff, 1, SPI_TIMEOUT);
 	}
 
 	VFD_DeactivateStrobe();
@@ -195,22 +198,19 @@ void VFD_DeactivateStrobe()
 
 void VFD_Test()
 {
-	VFD_Command(VFD_DATA_SETTING_WRITE_TO_DISPLAY_MODE);
-
-	VFD_AddressSettingCommand(0);
-
-	uint8_t allOff = 0x00;
-
-	for(uint8_t i = 0; i < 10; i++)
+	for(int i = 0; i < 26; i++)
 	{
-		HAL_SPI_Transmit(&hspi1, &fontForVFD[i], 1, 100);
-		HAL_SPI_Transmit(&hspi1, &allOff, 1, 100);
+		VFD_PrintCharacterAtPosition('a' + i, i % 9);
+		osDelay(200);
 	}
 
-	VFD_DeactivateStrobe();
+	VFD_Clear();
+	VFD_PrintCharacterAtPosition('s', 0);
+	VFD_PrintCharacterAtPosition('i', 1);
+	VFD_PrintCharacterAtPosition('s', 2);
+	VFD_PrintCharacterAtPosition('e', 3);
 
-	VFD_Command(VFD_DISPLAY_MODE_9DIG_13SEG);
-
-	VFD_Command(VFD_BRIGHTNESS_BASE | 0x04);
+	osDelay(1000);
+	VFD_Clear();
 }
 
