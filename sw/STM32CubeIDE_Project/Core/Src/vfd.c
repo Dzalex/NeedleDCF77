@@ -173,7 +173,7 @@ void VFD_WriteDataToDsiplay(uint8_t *data, uint8_t size)
 
 	for(uint8_t i = 0; i < size; i++)
 	{
-		HAL_SPI_Transmit(&hspi1, (uint8_t *)data, 1, 100);
+		HAL_SPI_Transmit(&hspi1, (uint8_t *)data + i, 1, 100);
 		HAL_SPI_Transmit(&hspi1, &allOff, 1, 100);
 	}
 
