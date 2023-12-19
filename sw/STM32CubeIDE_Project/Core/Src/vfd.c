@@ -73,7 +73,10 @@ void VFD_PowerOnAndInitialize()
 
 void VFD_PowerOffAndDeinitialize()
 {
-
+	LT1617_DisableNeg24VRail();
+	HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
+	LTC_Disable4VoltRail();
+	__HAL_SPI_DISABLE(&hspi1);
 }
 
 void VFD_ShowDate(RTC_DateTypeDef date)
