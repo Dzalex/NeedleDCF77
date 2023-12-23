@@ -42,10 +42,10 @@ const uint32_t SPI_TIMEOUT = 100;
 
 
 /* Forward declaration of local functions */
-void VFD_Command(uint8_t command);
-void VFD_AddressSettingCommand(uint8_t address);
-void VFD_ActivateStrobe();
-void VFD_DeactivateStrobe();
+static void VFD_Command(uint8_t command);
+static void VFD_AddressSettingCommand(uint8_t address);
+static void VFD_ActivateStrobe();
+static void VFD_DeactivateStrobe();
 
 
 void VFD_PowerOnAndInitialize()
