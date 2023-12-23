@@ -179,10 +179,10 @@ void VFD_Test()
 	}
 
 	VFD_Clear();
-	VFD_PrintCharacterAtPosition('s', 0);
-	VFD_PrintCharacterAtPosition('i', 1);
+	VFD_PrintCharacterAtPosition('t', 0);
+	VFD_PrintCharacterAtPosition('e', 1);
 	VFD_PrintCharacterAtPosition('s', 2);
-	VFD_PrintCharacterAtPosition('e', 3);
+	VFD_PrintCharacterAtPosition('t', 3);
 
 	osDelay(1000);
 	VFD_Clear();
