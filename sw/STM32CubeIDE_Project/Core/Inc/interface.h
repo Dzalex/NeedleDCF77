@@ -19,4 +19,6 @@ enum InterfaceEventFlags {
 	INTERFACE_BUTTON_HOLD_FLAG 		= 1 << 3
 };
 
+void IF_ShowDateOnVFD(RTC_DateTypeDef date);
+
 #endif /* INC_INTERFACE_H_ */
