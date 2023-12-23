@@ -39,8 +39,7 @@ const uint32_t SPI_TIMEOUT = 100;
 /* Forward declaration of local functions */
 void VFD_Command(uint8_t command);
 void VFD_AddressSettingCommand(uint8_t address);
-void VFD_Clear();
-void VFD_WriteDataToDsiplay(uint8_t *data, uint8_t size);
+void VFD_WriteDataToDsiplayAtPosition(uint8_t *data, uint8_t size, uint8_t position);
 void VFD_ActivateStrobe();
 void VFD_DeactivateStrobe();
 
@@ -100,12 +99,7 @@ void VFD_ShowDate(RTC_DateTypeDef date)
 	dateDataBuffer[6] = VFD_FONT_NUMBERS[date.Year / 10];
 	dateDataBuffer[7] = VFD_FONT_NUMBERS[date.Year % 10] | VFD_ACTIVATE_DOT;
 
-	VFD_Command(VFD_DATA_SETTING_WRITE_TO_DISPLAY_MODE);
-	VFD_AddressSettingCommand(0);
-	VFD_WriteDataToDsiplay(dateDataBuffer, sizeof(dateDataBuffer));
-
-	VFD_Command(VFD_DISPLAY_MODE_9DIG_13SEG);
-	VFD_Command(VFD_BRIGHTNESS_BASE | VFD_SELECTED_BRIGHTNESS);
+	VFD_WriteDataToDsiplayAtPosition(dateDataBuffer, sizeof(dateDataBuffer), 0);
 }
 
 void VFD_Command(uint8_t command)
@@ -143,39 +137,33 @@ void VFD_PrintDigitAtPosition(uint8_t digit, uint8_t possition)
 	if(digit > 9)
 		return;
 
-	uint8_t addressForPossition = possition * PT6312_BYTES_PER_GRID;
-
-	VFD_Command(VFD_DATA_SETTING_WRITE_TO_DISPLAY_MODE | VFD_FIXED_ADDRESS);
-	VFD_AddressSettingCommand(addressForPossition);
-	VFD_WriteDataToDsiplay((uint8_t *)&VFD_FONT_NUMBERS[digit], 1);
-
-	VFD_Command(VFD_DISPLAY_MODE_9DIG_13SEG);
-	VFD_Command(VFD_BRIGHTNESS_BASE | VFD_SELECTED_BRIGHTNESS);
-
+	VFD_WriteDataToDsiplayAtPosition((uint8_t *)&VFD_FONT_NUMBERS[digit], 1, possition);
 }
 
-void VFD_PrintCharacterAtPosition(char digit, uint8_t possition)
+void VFD_PrintCharacterAtPosition(char digit, uint8_t position)
 {
-	if(possition > VFD_GRIDS)
+	if(position > VFD_GRIDS)
 		return;
 
 	if(digit < 'a' || digit > 'z')
 		return;
 
-	uint8_t addressForPossition = possition * PT6312_BYTES_PER_GRID;
 	uint8_t characterToWrite = digit - 'a';
+
+	VFD_WriteDataToDsiplayAtPosition((uint8_t *)&VFD_FONT_LETTERS[characterToWrite], 1, position);
+}
+
+void VFD_WriteDataToDsiplayAtPosition(uint8_t *data, uint8_t size, uint8_t position)
+{
+	if(position > VFD_GRIDS){
+		return;
+	}
+
+	uint8_t addressForPossition = position * PT6312_BYTES_PER_GRID;
+	uint8_t allOff = 0x00;
 
 	VFD_Command(VFD_DATA_SETTING_WRITE_TO_DISPLAY_MODE);
 	VFD_AddressSettingCommand(addressForPossition);
-	VFD_WriteDataToDsiplay((uint8_t *)&VFD_FONT_LETTERS[characterToWrite], 1);
-
-	VFD_Command(VFD_DISPLAY_MODE_9DIG_13SEG);
-	VFD_Command(VFD_BRIGHTNESS_BASE | VFD_SELECTED_BRIGHTNESS);
-}
-
-void VFD_WriteDataToDsiplay(uint8_t *data, uint8_t size)
-{
-	uint8_t allOff = 0x00;
 
 	for(uint8_t i = 0; i < size; i++)
 	{
@@ -184,6 +172,9 @@ void VFD_WriteDataToDsiplay(uint8_t *data, uint8_t size)
 	}
 
 	VFD_DeactivateStrobe();
+
+	VFD_Command(VFD_DISPLAY_MODE_9DIG_13SEG);
+	VFD_Command(VFD_BRIGHTNESS_BASE | VFD_SELECTED_BRIGHTNESS);
 }
 
 void VFD_ActivateStrobe()
