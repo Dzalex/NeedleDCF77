@@ -23,7 +23,7 @@ void IF_ShowDateOnVFD(RTC_DateTypeDef date)
 
 	// Fill Year
 	dateDataBuffer[4] = VFD_FONT_NUMBERS[2];
-	dateDataBuffer[5] = VFD_FONT_NUMBERS[0]; // Year 20xx in next decade use 1
+	dateDataBuffer[5] = VFD_FONT_NUMBERS[0]; 									// Year 20xx in next century use 1
 	dateDataBuffer[6] = VFD_FONT_NUMBERS[date.Year / 10];
 	dateDataBuffer[7] = VFD_FONT_NUMBERS[date.Year % 10] | VFD_ACTIVATE_DOT;
 
