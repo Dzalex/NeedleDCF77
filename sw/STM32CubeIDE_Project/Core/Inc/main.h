@@ -64,8 +64,8 @@ int __io_putchar(int ch);
 #define PWM_Hour_GPIO_Port GPIOA
 #define PWM_Sec_Pin GPIO_PIN_3
 #define PWM_Sec_GPIO_Port GPIOA
-#define SPI_NSS_Pin GPIO_PIN_4
-#define SPI_NSS_GPIO_Port GPIOA
+#define VFD_STB_Pin GPIO_PIN_4
+#define VFD_STB_GPIO_Port GPIOA
 #define PWM_FOSC_Pin GPIO_PIN_5
 #define PWM_FOSC_GPIO_Port GPIOA
 #define DCF77_TIME_Pin GPIO_PIN_6
