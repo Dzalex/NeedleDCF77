@@ -67,10 +67,10 @@ const osThreadAttr_t DCF77Task_attributes = {
   .stack_size = 96 * 4,
   .priority = (osPriority_t) osPriorityAboveNormal,
 };
-/* Definitions for ButtonPeriodicCheck100ms */
-osTimerId_t ButtonPeriodicCheck100msHandle;
-const osTimerAttr_t ButtonPeriodicCheck100ms_attributes = {
-  .name = "ButtonPeriodicCheck100ms"
+/* Definitions for timerButtonPeriodicCheck100ms */
+osTimerId_t timerButtonPeriodicCheck100msHandle;
+const osTimerAttr_t timerButtonPeriodicCheck100ms_attributes = {
+  .name = "timerButtonPeriodicCheck100ms"
 };
 /* Definitions for interfaceEvent */
 osEventFlagsId_t interfaceEventHandle;
@@ -85,7 +85,7 @@ const osEventFlagsAttr_t interfaceEvent_attributes = {
 
 void StartInterfaceTask(void *argument);
 void StartDCF77Task(void *argument);
-void ButtonPeriodicCheck(void *argument);
+void TimerCBButtonPeriodicCheck(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -108,8 +108,8 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE END RTOS_SEMAPHORES */
 
   /* Create the timer(s) */
-  /* creation of ButtonPeriodicCheck100ms */
-  ButtonPeriodicCheck100msHandle = osTimerNew(ButtonPeriodicCheck, osTimerPeriodic, NULL, &ButtonPeriodicCheck100ms_attributes);
+  /* creation of timerButtonPeriodicCheck100ms */
+  timerButtonPeriodicCheck100msHandle = osTimerNew(TimerCBButtonPeriodicCheck, osTimerPeriodic, NULL, &timerButtonPeriodicCheck100ms_attributes);
 
   /* USER CODE BEGIN RTOS_TIMERS */
   /* start timers, add new ones, ... */
@@ -212,12 +212,12 @@ void StartDCF77Task(void *argument)
   /* USER CODE END StartDCF77Task */
 }
 
-/* ButtonPeriodicCheck function */
-void ButtonPeriodicCheck(void *argument)
+/* TimerCBButtonPeriodicCheck function */
+void TimerCBButtonPeriodicCheck(void *argument)
 {
-  /* USER CODE BEGIN ButtonPeriodicCheck */
+  /* USER CODE BEGIN TimerCBButtonPeriodicCheck */
 
-  /* USER CODE END ButtonPeriodicCheck */
+  /* USER CODE END TimerCBButtonPeriodicCheck */
 }
 
 /* Private application code --------------------------------------------------*/
