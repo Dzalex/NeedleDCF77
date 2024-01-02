@@ -160,7 +160,7 @@ void StartInterfaceTask(void *argument)
   /* Infinite loop */
 	for(;;)
 	{
-		receivedInterfaceFlag = osEventFlagsWait(interfaceEventHandle, 1, osFlagsWaitAny, osWaitForever);
+		receivedInterfaceFlag = osEventFlagsWait(interfaceEventHandle, flagsWithUnblockAbility, osFlagsWaitAny, osWaitForever);
 		switch(receivedInterfaceFlag)
 		{
 		case INTERFACE_SECOND_FLAG:

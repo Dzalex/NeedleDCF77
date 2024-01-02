@@ -9,6 +9,8 @@
 #include "vfd.h"
 #include "vfd_font.h"
 
+const uint32_t flagsWithUnblockAbility = INTERFACE_SECOND_FLAG | INTERFACE_2AM_FLAG | INTERFACE_BUTTON_PRESS_FLAG | INTERFACE_BUTTON_HOLD_FLAG;
+
 void IF_ShowDateOnVFD(RTC_DateTypeDef date)
 {
 	uint8_t dateDataBuffer[8];
