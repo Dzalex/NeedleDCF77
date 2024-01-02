@@ -72,6 +72,11 @@ osTimerId_t timerButtonPeriodicCheck100msHandle;
 const osTimerAttr_t timerButtonPeriodicCheck100ms_attributes = {
   .name = "timerButtonPeriodicCheck100ms"
 };
+/* Definitions for timerWaitForVDFoff */
+osTimerId_t timerWaitForVDFoffHandle;
+const osTimerAttr_t timerWaitForVDFoff_attributes = {
+  .name = "timerWaitForVDFoff"
+};
 /* Definitions for interfaceEvent */
 osEventFlagsId_t interfaceEventHandle;
 const osEventFlagsAttr_t interfaceEvent_attributes = {
@@ -86,6 +91,7 @@ const osEventFlagsAttr_t interfaceEvent_attributes = {
 void StartInterfaceTask(void *argument);
 void StartDCF77Task(void *argument);
 void TimerCBButtonPeriodicCheck(void *argument);
+void timerCBWaitForVDFoff(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -110,6 +116,9 @@ void MX_FREERTOS_Init(void) {
   /* Create the timer(s) */
   /* creation of timerButtonPeriodicCheck100ms */
   timerButtonPeriodicCheck100msHandle = osTimerNew(TimerCBButtonPeriodicCheck, osTimerPeriodic, NULL, &timerButtonPeriodicCheck100ms_attributes);
+
+  /* creation of timerWaitForVDFoff */
+  timerWaitForVDFoffHandle = osTimerNew(timerCBWaitForVDFoff, osTimerOnce, NULL, &timerWaitForVDFoff_attributes);
 
   /* USER CODE BEGIN RTOS_TIMERS */
   /* start timers, add new ones, ... */
@@ -218,6 +227,14 @@ void TimerCBButtonPeriodicCheck(void *argument)
   /* USER CODE BEGIN TimerCBButtonPeriodicCheck */
 
   /* USER CODE END TimerCBButtonPeriodicCheck */
+}
+
+/* timerCBWaitForVDFoff function */
+void timerCBWaitForVDFoff(void *argument)
+{
+  /* USER CODE BEGIN timerCBWaitForVDFoff */
+
+  /* USER CODE END timerCBWaitForVDFoff */
 }
 
 /* Private application code --------------------------------------------------*/
