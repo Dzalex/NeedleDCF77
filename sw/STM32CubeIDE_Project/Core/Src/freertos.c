@@ -184,7 +184,7 @@ void StartInterfaceTask(void *argument)
 			}
 			break;
 		case INTERFACE_2AM_FLAG:
-
+			/* TODO: At this event we unblock DCF77 task to start the sync! */
 			break;
 		case INTERFACE_BUTTON_PRESS_FLAG:
 			if(showingDate == false)
@@ -194,9 +194,11 @@ void StartInterfaceTask(void *argument)
 			showingDate = true;
 
 			osTimerStart(timerWaitForVDFoffHandle, VFD_WAKE_TIME);
+			osTimerStart(timerButtonPeriodicCheck100msHandle, 100);
 			break;
 		case INTERFACE_BUTTON_HOLD_FLAG:
-
+			/* TODO: At this event we unblock DCF77 task to start the sync! */
+			VFD_PrintCharacterAtPosition('s', 8);
 		break;
 		}
 
@@ -228,6 +230,23 @@ void StartDCF77Task(void *argument)
 void TimerCBButtonPeriodicCheck(void *argument)
 {
   /* USER CODE BEGIN TimerCBButtonPeriodicCheck */
+	static uint8_t functionEntryCount = 0;
+	GPIO_PinState buttonStatus = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0);
+
+	functionEntryCount++;
+
+	if (functionEntryCount > 30)	// Button is held for long time ~ 3 sec
+	{
+		functionEntryCount = 0;
+		osEventFlagsSet(interfaceEventHandle, INTERFACE_BUTTON_HOLD_FLAG);
+	}
+
+	if(buttonStatus == GPIO_PIN_SET)	// Button is de-pressed
+	{
+		functionEntryCount = 0;
+		osTimerStop(timerButtonPeriodicCheck100msHandle);
+	}
+
 
   /* USER CODE END TimerCBButtonPeriodicCheck */
 }
