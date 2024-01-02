@@ -51,6 +51,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
+static bool showingDate = false;
 
 /* USER CODE END Variables */
 /* Definitions for interfaceTask */
@@ -160,7 +161,7 @@ void StartInterfaceTask(void *argument)
 {
   /* USER CODE BEGIN StartInterfaceTask */
 	uint32_t receivedInterfaceFlag = 0;
-	bool showingDate = false;
+	const uint32_t VFD_WAKE_TIME = 1000 * 30;	// 1000 tick * 30 -> ~30 sec
 	RTC_TimeTypeDef currentTime = {0};
 	RTC_DateTypeDef currentDate = {0};
 
@@ -191,6 +192,8 @@ void StartInterfaceTask(void *argument)
 				VFD_PowerOnAndInitialize();
 			}
 			showingDate = true;
+
+			osTimerStart(timerWaitForVDFoffHandle, VFD_WAKE_TIME);
 			break;
 		case INTERFACE_BUTTON_HOLD_FLAG:
 
@@ -233,7 +236,8 @@ void TimerCBButtonPeriodicCheck(void *argument)
 void timerCBWaitForVDFoff(void *argument)
 {
   /* USER CODE BEGIN timerCBWaitForVDFoff */
-
+	VFD_PowerOffAndDeinitialize();
+	showingDate = false;
   /* USER CODE END timerCBWaitForVDFoff */
 }
 
