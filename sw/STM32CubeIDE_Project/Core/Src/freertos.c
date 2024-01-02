@@ -231,11 +231,12 @@ void TimerCBButtonPeriodicCheck(void *argument)
 {
   /* USER CODE BEGIN TimerCBButtonPeriodicCheck */
 	static uint8_t functionEntryCount = 0;
-	GPIO_PinState buttonStatus = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0);
+	const uint8_t waitCycles = 30;
 
+	GPIO_PinState buttonStatus = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0);
 	functionEntryCount++;
 
-	if (functionEntryCount > 30)	// Button is held for long time ~ 3 sec
+	if (functionEntryCount > waitCycles)	// Button is held for long time ~ 3 sec
 	{
 		functionEntryCount = 0;
 		osEventFlagsSet(interfaceEventHandle, INTERFACE_BUTTON_HOLD_FLAG);
