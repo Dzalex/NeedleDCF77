@@ -26,9 +26,11 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stdio.h"
+#include "stdbool.h"
 #include "rtc.h"
 #include "interface.h"
 #include "needle.h"
+#include "vfd.h"
 
 /* USER CODE END Includes */
 
@@ -149,6 +151,7 @@ void StartInterfaceTask(void *argument)
 {
   /* USER CODE BEGIN StartInterfaceTask */
 	uint32_t receivedInterfaceFlag = 0;
+	bool showingDate = false;
 	RTC_TimeTypeDef currentTime = {0};
 	RTC_DateTypeDef currentDate = {0};
 
@@ -164,12 +167,21 @@ void StartInterfaceTask(void *argument)
 			HAL_RTC_GetTime(&hrtc, &currentTime, RTC_FORMAT_BIN);
 			HAL_RTC_GetDate(&hrtc, &currentDate, RTC_FORMAT_BIN);
 			NDL_SetAllNeedles(currentTime);
+
+			if(showingDate == true)
+			{
+				IF_ShowDateOnVFD(currentDate);
+			}
 			break;
 		case INTERFACE_2AM_FLAG:
 
 			break;
 		case INTERFACE_BUTTON_PRESS_FLAG:
-
+			if(showingDate == false)
+			{
+				VFD_PowerOnAndInitialize();
+			}
+			showingDate = true;
 			break;
 		case INTERFACE_BUTTON_HOLD_FLAG:
 
