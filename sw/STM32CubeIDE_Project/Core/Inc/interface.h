@@ -11,6 +11,7 @@
 #include "cmsis_os.h"
 
 extern osEventFlagsId_t interfaceEventHandle;
+extern const uint32_t flagsWithUnblockAbility;
 
 enum InterfaceEventFlags {
 	INTERFACE_SECOND_FLAG 			= 1 << 0,

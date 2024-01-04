@@ -26,9 +26,11 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stdio.h"
+#include "stdbool.h"
 #include "rtc.h"
 #include "interface.h"
 #include "needle.h"
+#include "vfd.h"
 
 /* USER CODE END Includes */
 
@@ -49,6 +51,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
+static bool showingDate = false;
 
 /* USER CODE END Variables */
 /* Definitions for interfaceTask */
@@ -65,6 +68,16 @@ const osThreadAttr_t DCF77Task_attributes = {
   .stack_size = 96 * 4,
   .priority = (osPriority_t) osPriorityAboveNormal,
 };
+/* Definitions for timerButtonPeriodicCheck100ms */
+osTimerId_t timerButtonPeriodicCheck100msHandle;
+const osTimerAttr_t timerButtonPeriodicCheck100ms_attributes = {
+  .name = "timerButtonPeriodicCheck100ms"
+};
+/* Definitions for timerWaitForVDFoff */
+osTimerId_t timerWaitForVDFoffHandle;
+const osTimerAttr_t timerWaitForVDFoff_attributes = {
+  .name = "timerWaitForVDFoff"
+};
 /* Definitions for interfaceEvent */
 osEventFlagsId_t interfaceEventHandle;
 const osEventFlagsAttr_t interfaceEvent_attributes = {
@@ -78,6 +91,8 @@ const osEventFlagsAttr_t interfaceEvent_attributes = {
 
 void StartInterfaceTask(void *argument);
 void StartDCF77Task(void *argument);
+void TimerCBButtonPeriodicCheck(void *argument);
+void timerCBWaitForVDFoff(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -98,6 +113,13 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
   /* USER CODE END RTOS_SEMAPHORES */
+
+  /* Create the timer(s) */
+  /* creation of timerButtonPeriodicCheck100ms */
+  timerButtonPeriodicCheck100msHandle = osTimerNew(TimerCBButtonPeriodicCheck, osTimerPeriodic, NULL, &timerButtonPeriodicCheck100ms_attributes);
+
+  /* creation of timerWaitForVDFoff */
+  timerWaitForVDFoffHandle = osTimerNew(timerCBWaitForVDFoff, osTimerOnce, NULL, &timerWaitForVDFoff_attributes);
 
   /* USER CODE BEGIN RTOS_TIMERS */
   /* start timers, add new ones, ... */
@@ -139,6 +161,7 @@ void StartInterfaceTask(void *argument)
 {
   /* USER CODE BEGIN StartInterfaceTask */
 	uint32_t receivedInterfaceFlag = 0;
+	const uint32_t VFD_WAKE_TIME = 1000 * 30;	// 1000 tick * 30 -> ~30 sec
 	RTC_TimeTypeDef currentTime = {0};
 	RTC_DateTypeDef currentDate = {0};
 
@@ -147,22 +170,35 @@ void StartInterfaceTask(void *argument)
   /* Infinite loop */
 	for(;;)
 	{
-		receivedInterfaceFlag = osEventFlagsWait(interfaceEventHandle, 1, osFlagsWaitAny, osWaitForever);
+		receivedInterfaceFlag = osEventFlagsWait(interfaceEventHandle, flagsWithUnblockAbility, osFlagsWaitAny, osWaitForever);
 		switch(receivedInterfaceFlag)
 		{
 		case INTERFACE_SECOND_FLAG:
 			HAL_RTC_GetTime(&hrtc, &currentTime, RTC_FORMAT_BIN);
 			HAL_RTC_GetDate(&hrtc, &currentDate, RTC_FORMAT_BIN);
 			NDL_SetAllNeedles(currentTime);
+
+			if(showingDate == true)
+			{
+				IF_ShowDateOnVFD(currentDate);
+			}
 			break;
 		case INTERFACE_2AM_FLAG:
-
+			/* TODO: At this event we unblock DCF77 task to start the sync! */
 			break;
 		case INTERFACE_BUTTON_PRESS_FLAG:
+			if(showingDate == false)
+			{
+				VFD_PowerOnAndInitialize();
+			}
+			showingDate = true;
 
+			osTimerStart(timerWaitForVDFoffHandle, VFD_WAKE_TIME);
+			osTimerStart(timerButtonPeriodicCheck100msHandle, 100);
 			break;
 		case INTERFACE_BUTTON_HOLD_FLAG:
-
+			/* TODO: At this event we unblock DCF77 task to start the sync! */
+			VFD_PrintCharacterAtPosition('s', 8);
 		break;
 		}
 
@@ -188,6 +224,40 @@ void StartDCF77Task(void *argument)
 	  osDelay(1);
   }
   /* USER CODE END StartDCF77Task */
+}
+
+/* TimerCBButtonPeriodicCheck function */
+void TimerCBButtonPeriodicCheck(void *argument)
+{
+  /* USER CODE BEGIN TimerCBButtonPeriodicCheck */
+	static uint8_t functionEntryCount = 0;
+	const uint8_t waitCycles = 30;
+
+	GPIO_PinState buttonStatus = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0);
+	functionEntryCount++;
+
+	if (functionEntryCount > waitCycles)	// Button is held for long time ~ 3 sec
+	{
+		functionEntryCount = 0;
+		osTimerStop(timerButtonPeriodicCheck100msHandle);
+		osEventFlagsSet(interfaceEventHandle, INTERFACE_BUTTON_HOLD_FLAG);
+	}
+
+	if(buttonStatus == GPIO_PIN_SET)	// Button is de-pressed
+	{
+		functionEntryCount = 0;
+		osTimerStop(timerButtonPeriodicCheck100msHandle);
+	}
+  /* USER CODE END TimerCBButtonPeriodicCheck */
+}
+
+/* timerCBWaitForVDFoff function */
+void timerCBWaitForVDFoff(void *argument)
+{
+  /* USER CODE BEGIN timerCBWaitForVDFoff */
+	VFD_PowerOffAndDeinitialize();
+	showingDate = false;
+  /* USER CODE END timerCBWaitForVDFoff */
 }
 
 /* Private application code --------------------------------------------------*/
