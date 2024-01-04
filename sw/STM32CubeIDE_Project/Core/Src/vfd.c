@@ -136,6 +136,26 @@ void VFD_PrintCharacterAtPosition(char digit, uint8_t position)
 	VFD_WriteDataToDsiplayAtPosition((uint8_t *)&VFD_FONT_LETTERS[characterToWrite], 1, position);
 }
 
+void VFD_PrintPositiveNumber(uint32_t number)
+{
+	uint8_t numberDataBuffer[9] = {0, 0, 0, 0, 0, 0, 0, 0, VFD_FONT_NUMBERS[0]};
+	int8_t i = 8;
+
+	if(number > 999999999)
+	{
+		return;
+	}
+
+	while(i >= 0 && number != 0)
+	{
+		numberDataBuffer[i] = VFD_FONT_NUMBERS[number % 10];
+		number = number / 10;
+		i--;
+	}
+
+	VFD_WriteDataToDsiplayAtPosition(numberDataBuffer, sizeof(numberDataBuffer), 0);
+}
+
 void VFD_WriteDataToDsiplayAtPosition(uint8_t *data, uint8_t size, uint8_t position)
 {
 	if(position >= VFD_GRIDS){
