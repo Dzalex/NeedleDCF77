@@ -239,6 +239,7 @@ void TimerCBButtonPeriodicCheck(void *argument)
 	if (functionEntryCount > waitCycles)	// Button is held for long time ~ 3 sec
 	{
 		functionEntryCount = 0;
+		osTimerStop(timerButtonPeriodicCheck100msHandle);
 		osEventFlagsSet(interfaceEventHandle, INTERFACE_BUTTON_HOLD_FLAG);
 	}
 
@@ -247,8 +248,6 @@ void TimerCBButtonPeriodicCheck(void *argument)
 		functionEntryCount = 0;
 		osTimerStop(timerButtonPeriodicCheck100msHandle);
 	}
-
-
   /* USER CODE END TimerCBButtonPeriodicCheck */
 }
 
