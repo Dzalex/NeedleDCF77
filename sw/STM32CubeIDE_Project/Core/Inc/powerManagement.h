@@ -25,4 +25,6 @@ chargeStatus LTC_GetChargeStatus(void);
 void LT1617_EnableNeg24VRail(void);
 void LT1617_DisableNeg24VRail(void);
 
+uint16_t BAT_GetBatteryVoltage_mV(void);
+
 #endif /* INC_POWERMANAGEMENT_H_ */
