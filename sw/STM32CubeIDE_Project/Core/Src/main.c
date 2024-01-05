@@ -96,6 +96,7 @@ int main(void)
   MX_TIM2_Init();
   MX_USART1_UART_Init();
   MX_ADC_Init();
+  MX_TIM22_Init();
   /* USER CODE BEGIN 2 */
   LTC_SetBurstMode();	/* Use burst mode in general use - power efficiency is better by 1mA */
   /* USER CODE END 2 */

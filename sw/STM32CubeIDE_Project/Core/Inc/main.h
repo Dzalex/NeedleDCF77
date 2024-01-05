@@ -68,8 +68,6 @@ int __io_putchar(int ch);
 #define VFD_STB_GPIO_Port GPIOA
 #define PWM_FOSC_Pin GPIO_PIN_5
 #define PWM_FOSC_GPIO_Port GPIOA
-#define DCF77_TIME_Pin GPIO_PIN_6
-#define DCF77_TIME_GPIO_Port GPIOA
 #define BATT_LEVEL_Pin GPIO_PIN_7
 #define BATT_LEVEL_GPIO_Port GPIOA
 #define DCF77_PDN_Pin GPIO_PIN_10
