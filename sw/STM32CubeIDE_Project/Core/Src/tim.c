@@ -167,6 +167,9 @@ void HAL_TIM_IC_MspInit(TIM_HandleTypeDef* tim_icHandle)
     GPIO_InitStruct.Alternate = GPIO_AF5_TIM22;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
+    /* TIM22 interrupt Init */
+    HAL_NVIC_SetPriority(TIM22_IRQn, 3, 0);
+    HAL_NVIC_EnableIRQ(TIM22_IRQn);
   /* USER CODE BEGIN TIM22_MspInit 1 */
 
   /* USER CODE END TIM22_MspInit 1 */
@@ -242,6 +245,8 @@ void HAL_TIM_IC_MspDeInit(TIM_HandleTypeDef* tim_icHandle)
     */
     HAL_GPIO_DeInit(GPIOA, GPIO_PIN_6);
 
+    /* TIM22 interrupt Deinit */
+    HAL_NVIC_DisableIRQ(TIM22_IRQn);
   /* USER CODE BEGIN TIM22_MspDeInit 1 */
 
   /* USER CODE END TIM22_MspDeInit 1 */
