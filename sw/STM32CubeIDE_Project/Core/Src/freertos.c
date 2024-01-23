@@ -31,6 +31,7 @@
 #include "interface.h"
 #include "needle.h"
 #include "vfd.h"
+#include "dcf77.h"
 
 /* USER CODE END Includes */
 
@@ -67,6 +68,11 @@ const osThreadAttr_t DCF77Task_attributes = {
   .name = "DCF77Task",
   .stack_size = 96 * 4,
   .priority = (osPriority_t) osPriorityAboveNormal,
+};
+/* Definitions for DCF77_TimeSamplesQueue */
+osMessageQueueId_t DCF77_TimeSamplesQueueHandle;
+const osMessageQueueAttr_t DCF77_TimeSamplesQueue_attributes = {
+  .name = "DCF77_TimeSamplesQueue"
 };
 /* Definitions for timerButtonPeriodicCheck100ms */
 osTimerId_t timerButtonPeriodicCheck100msHandle;
@@ -124,6 +130,10 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_TIMERS */
   /* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
+
+  /* Create the queue(s) */
+  /* creation of DCF77_TimeSamplesQueue */
+  DCF77_TimeSamplesQueueHandle = osMessageQueueNew (2, sizeof(DCF77_TimeSample_t), &DCF77_TimeSamplesQueue_attributes);
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
