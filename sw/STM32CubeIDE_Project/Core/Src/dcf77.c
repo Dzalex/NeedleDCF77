@@ -5,6 +5,7 @@
  *      Author: Dzale
  */
 
+#include "dcf77.h"
 #include "main.h"
 #include "tim.h"
 
@@ -46,4 +47,18 @@ static void DCF77_StopICTimers(void)
 {
 	HAL_TIM_IC_Stop_IT(&htim22, TIM_CHANNEL_1);   	// main channel
 	HAL_TIM_IC_Stop(&htim22, TIM_CHANNEL_2);   		// indirect channel
+}
+
+void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
+{
+	static DCF77_TimeSample_t currentSample;
+
+	if (htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1)  // If the interrupt is triggered by channel 1
+		{
+			// Read the IC values
+			currentSample.signalLength = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
+			currentSample.pulseLength = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
+
+			osMessageQueuePut(DCF77_TimeSamplesQueueHandle, &currentSample, 0U, 0U);
+		}
 }

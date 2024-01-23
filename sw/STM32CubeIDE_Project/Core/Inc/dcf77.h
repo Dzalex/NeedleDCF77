@@ -9,6 +9,7 @@
 #define INC_DCF77_H_
 
 #include "main.h"
+#include "cmsis_os2.h"
 
 extern osMessageQueueId_t DCF77_TimeSamplesQueueHandle;
 
