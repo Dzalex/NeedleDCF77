@@ -10,14 +10,7 @@
 
 #include "main.h"
 
-void DCF77_EnableReceiver(void)
-{
-	HAL_GPIO_WritePin(DCF77_PDN_GPIO_Port, DCF77_PDN_Pin, GPIO_PIN_RESET);
-}
-
-void DCF77_DisableReceiver(void)
-{
-	HAL_GPIO_WritePin(DCF77_PDN_GPIO_Port, DCF77_PDN_Pin, GPIO_PIN_SET);
-}
+void DCF77_Initialize(void);
+void DCF77_DeInitialize(void);
 
 #endif /* INC_DCF77_H_ */
