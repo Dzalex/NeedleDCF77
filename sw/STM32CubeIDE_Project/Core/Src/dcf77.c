@@ -18,6 +18,27 @@ const uint16_t ONE_PULS_DURATION_MIN = 140;
 
 const uint16_t MINUTE_MARK_PULS_DURATION_MAX = 2100;
 const uint16_t MINUTE_MARK_PULS_DURATION_MIN = 1600;
+
+struct DCF77Buffer_t {
+	uint64_t startOfMinute		:1;
+	uint64_t prefix     		:16;
+	uint64_t CEST       		:1;
+	uint64_t CET        		:1;
+	uint64_t leapSecond 		:1;
+	uint64_t startEncoding 		:1;
+	uint64_t Min        		:7;
+	uint64_t P1         		:1;
+	uint64_t Hour       		:6;
+	uint64_t P2         		:1;
+	uint64_t Day        		:6;
+	uint64_t Weekday    		:3;
+	uint64_t Month      		:5;
+	uint64_t Year       		:8;
+	uint64_t P3         		:1;
+    };
+
+enum PulseType {ZERO_PULSE = 0, ONE_PULSE = 1, MINUTE_PULSE, UNKNOWN_PULSE};
+
 /* Forward declaration of local functions */
 static void DCF77_EnableReceiver(void);
 static void DCF77_DisableReceiver(void);
@@ -36,6 +57,7 @@ void DCF77_DeInitialize(void)
 	DCF77_StopICTimers();
 }
 
+	struct DCF77Buffer_t DCF77Buffer;
 static void DCF77_EnableReceiver(void)
 {
 	HAL_GPIO_WritePin(DCF77_PDN_GPIO_Port, DCF77_PDN_Pin, GPIO_PIN_RESET);
