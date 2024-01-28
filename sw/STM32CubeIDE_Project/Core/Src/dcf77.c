@@ -9,6 +9,15 @@
 #include "main.h"
 #include "tim.h"
 
+/* Constants related to DCF77 protocol */
+/* Min and max values from da6180B.pdf */
+const uint16_t ZERO_PULS_DURATION_MAX = 130;
+const uint16_t ZERO_PULS_DURATION_MIN = 40;
+const uint16_t ONE_PULS_DURATION_MAX = 250;
+const uint16_t ONE_PULS_DURATION_MIN = 140;
+
+const uint16_t MINUTE_MARK_PULS_DURATION_MAX = 2100;
+const uint16_t MINUTE_MARK_PULS_DURATION_MIN = 1600;
 /* Forward declaration of local functions */
 static void DCF77_EnableReceiver(void);
 static void DCF77_DisableReceiver(void);
