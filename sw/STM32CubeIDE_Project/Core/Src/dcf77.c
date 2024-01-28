@@ -48,6 +48,7 @@ static void DCF77_DisableReceiver(void);
 static void DCF77_StartICTimers(void);
 static void DCF77_StopICTimers(void);
 enum PulseType DCF77_CheckPulseType(DCF77_TimeSample_t* sampleToCheck);
+void DCF77_FillBufferOnPosition(DCF77Buffer_t* DCF77Buffer, uint8_t currentBit, uint32_t valueOnPosition);
 
 void DCF77_Initialize(void)
 {
@@ -82,6 +83,12 @@ enum PulseType DCF77_CheckPulseType(DCF77_TimeSample_t* sampleToCheck)
 	}
 
 	return UNKNOWN_PULSE;
+}
+
+void DCF77_FillBufferOnPosition(DCF77Buffer_t* DCF77Buffer, uint8_t currentBit, uint32_t valueOnPosition)
+{
+	uint64_t mask = 1 << currentBit;
+	DCF77Buffer->DCF77bits = (DCF77Buffer->DCF77bits & ~mask) | (valueOnPosition << currentBit);
 }
 
 static void DCF77_EnableReceiver(void)
