@@ -44,6 +44,7 @@ static void DCF77_EnableReceiver(void);
 static void DCF77_DisableReceiver(void);
 static void DCF77_StartICTimers(void);
 static void DCF77_StopICTimers(void);
+enum PulseType DCF77_CheckPulseType(DCF77_TimeSample_t* sampleToCheck);
 
 void DCF77_Initialize(void)
 {
@@ -58,6 +59,28 @@ void DCF77_DeInitialize(void)
 }
 
 	struct DCF77Buffer_t DCF77Buffer;
+
+enum PulseType DCF77_CheckPulseType(DCF77_TimeSample_t* sampleToCheck)
+{
+	if(		sampleToCheck->pulseLength > ZERO_PULS_DURATION_MIN && \
+			sampleToCheck->pulseLength < ZERO_PULS_DURATION_MAX)
+	{
+		return ZERO_PULSE;
+	}
+	else if(sampleToCheck->pulseLength > ONE_PULS_DURATION_MIN && \
+			sampleToCheck->pulseLength < ONE_PULS_DURATION_MAX)
+	{
+		return ONE_PULSE;
+	}
+	else if(sampleToCheck->pulseLength > MINUTE_MARK_PULS_DURATION_MIN && \
+			sampleToCheck->pulseLength < MINUTE_MARK_PULS_DURATION_MAX)
+	{
+		return MINUTE_PULSE;
+	}
+
+	return UNKNOWN_PULSE;
+}
+
 static void DCF77_EnableReceiver(void)
 {
 	HAL_GPIO_WritePin(DCF77_PDN_GPIO_Port, DCF77_PDN_Pin, GPIO_PIN_RESET);
