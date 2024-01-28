@@ -21,7 +21,7 @@
 #include "rtc.h"
 
 /* USER CODE BEGIN 0 */
-
+#include "stm32l0xx_ll_rtc.h"
 /* USER CODE END 0 */
 
 RTC_HandleTypeDef hrtc;
@@ -89,7 +89,9 @@ void MX_RTC_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN RTC_Init 2 */
-
+  LL_RTC_DisableWriteProtection(hrtc.Instance);
+  LL_RTC_CAL_SetMinus(hrtc.Instance, RTC_CAL_CALM_VALUE);
+  LL_RTC_EnableWriteProtection(hrtc.Instance);
   /* USER CODE END RTC_Init 2 */
 
 }

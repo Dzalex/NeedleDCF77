@@ -58,6 +58,7 @@ int __io_putchar(int ch);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define RTC_CAL_CALM_VALUE 93
 #define PWM_Min_Pin GPIO_PIN_1
 #define PWM_Min_GPIO_Port GPIOA
 #define PWM_Hour_Pin GPIO_PIN_2
