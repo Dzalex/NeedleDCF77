@@ -64,7 +64,6 @@ void DCF77_DeInitialize(void)
 	DCF77_StopICTimers();
 }
 
-	struct DCF77Buffer_t DCF77Buffer;
 
 enum PulseType DCF77_CheckPulseType(DCF77_TimeSample_t* sampleToCheck)
 {
