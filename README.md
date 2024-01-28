@@ -1,6 +1,9 @@
 # NeedleDCF77
 ## General idea
 This project is clock that shows time using three analog meters (with needle) for time and one VFD for date. Main time reference is [DCF77](https://en.wikipedia.org/wiki/DCF77) signal attainable in most of Europe.
+### Assembled clock
+![DSC_9274edit](https://github.com/Dzalex/NeedleDCF77/assets/75816219/7fe31634-a44e-4f18-a4cd-9f0b9831dc4f)
+
 ## Hardware
 ### Alredy decided
   - Main microcontroller is *STM32L051C8T6*
