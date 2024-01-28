@@ -1,4 +1,7 @@
 #MicroXplorer Configuration settings - do not modify
+ADC.IPParameters=LowPowerAutoWait,LowPowerAutoPowerOff
+ADC.LowPowerAutoPowerOff=ENABLE
+ADC.LowPowerAutoWait=ENABLE
 CAD.formats=
 CAD.pinconfig=
 CAD.provider=
