@@ -42,6 +42,8 @@ typedef union {
 
 enum PulseType {ZERO_PULSE = 0, ONE_PULSE = 1, MINUTE_PULSE, UNKNOWN_PULSE};
 
+const uint32_t SYNCHRONISATION_TIMEOUT = 5 * 60 * 1000;	// Sync time of 5 minutes max
+
 /* Forward declaration of local functions */
 static void DCF77_EnableReceiver(void);
 static void DCF77_DisableReceiver(void);
