@@ -41,6 +41,7 @@ typedef union {
 } DCF77Buffer_t;
 
 enum PulseType {ZERO_PULSE = 0, ONE_PULSE = 1, MINUTE_PULSE, UNKNOWN_PULSE};
+enum BufferErrors {INTEGRITY_OK = 0, FIRST_BIT_NOT_ONE,  START_OF_ENC_NOT_ONE, WRONG_MIN_PARITY, WRONG_HOUR_PARITY, WRONG_DATE_PARITY};
 
 const uint32_t SYNCHRONISATION_TIMEOUT = 5 * 60 * 1000;	// Sync time of 5 minutes max
 
@@ -50,6 +51,7 @@ static void DCF77_DisableReceiver(void);
 static void DCF77_StartICTimers(void);
 static void DCF77_StopICTimers(void);
 enum PulseType DCF77_CheckPulseType(DCF77_TimeSample_t* sampleToCheck);
+enum BufferErrors DCF77_CheckBufferIntegrity(DCF77Buffer_t* DCF77Buffer);
 void DCF77_FillBufferOnPosition(DCF77Buffer_t* DCF77Buffer, uint8_t currentBit, uint32_t valueOnPosition);
 
 void DCF77_Initialize(void)
@@ -64,6 +66,41 @@ void DCF77_DeInitialize(void)
 	DCF77_StopICTimers();
 }
 
+ErrorStatus DCF77_GetTimeAndDate(RTC_TimeTypeDef* timeBuffer, RTC_DateTypeDef* dateBuffer)
+{
+	DCF77Buffer_t DCF77Buffer;
+	DCF77_TimeSample_t newSample;
+	uint8_t currentBit = 0;
+	enum PulseType currentPulseType;
+	uint32_t timeoutTickCount = SYNCHRONISATION_TIMEOUT + osKernelGetTickCount();
+
+	while(timeoutTickCount > osKernelGetTickCount())
+	{
+		osMessageQueueGet(DCF77_TimeSamplesQueueHandle, &newSample, NULL, 0U);
+		currentPulseType = DCF77_CheckPulseType(&newSample);
+		switch(currentPulseType)
+		{
+		case MINUTE_PULSE:
+			if(DCF77_CheckBufferIntegrity(&DCF77Buffer) == INTEGRITY_OK)
+			{
+				;
+			}
+			DCF77Buffer.DCF77bits = 0;
+			currentBit = 59;
+		case UNKNOWN_PULSE:
+			continue;
+		case ZERO_PULSE:
+		case ONE_PULSE:
+			if(currentBit == 59)
+			{
+				currentBit = 0;
+			}
+			DCF77_FillBufferOnPosition(&DCF77Buffer, currentBit, (uint32_t)currentPulseType);
+			currentBit++;
+		}
+	}
+	return ERROR;
+}
 
 enum PulseType DCF77_CheckPulseType(DCF77_TimeSample_t* sampleToCheck)
 {
@@ -84,6 +121,12 @@ enum PulseType DCF77_CheckPulseType(DCF77_TimeSample_t* sampleToCheck)
 	}
 
 	return UNKNOWN_PULSE;
+}
+
+enum BufferErrors DCF77_CheckBufferIntegrity(DCF77Buffer_t* DCF77Buffer)
+{
+
+	return INTEGRITY_OK;
 }
 
 void DCF77_FillBufferOnPosition(DCF77Buffer_t* DCF77Buffer, uint8_t currentBit, uint32_t valueOnPosition)

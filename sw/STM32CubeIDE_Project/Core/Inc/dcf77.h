@@ -21,5 +21,6 @@ typedef struct DCF77_TimeSample
 
 void DCF77_Initialize(void);
 void DCF77_DeInitialize(void);
+ErrorStatus DCF77_GetTimeAndDate(RTC_TimeTypeDef* timeBuffer, RTC_DateTypeDef* dateBuffer);
 
 #endif /* INC_DCF77_H_ */

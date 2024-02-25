@@ -227,12 +227,13 @@ void StartInterfaceTask(void *argument)
 void StartDCF77Task(void *argument)
 {
   /* USER CODE BEGIN StartDCF77Task */
-	DCF77_TimeSample_t newSample;;
-	DCF77_Initialize();
+	RTC_TimeTypeDef timeToSet = {0};
+	RTC_DateTypeDef dateToSet = {0};
   /* Infinite loop */
   for(;;)
   {
-	  osMessageQueueGet(DCF77_TimeSamplesQueueHandle, &newSample, NULL, 0U);
+	  DCF77_Initialize();
+	  DCF77_GetTimeAndDate(&timeToSet, &dateToSet);
 	  DCF77_DeInitialize();
 	  osThreadSuspend(DCF77TaskHandle);
 	  osDelay(1);
