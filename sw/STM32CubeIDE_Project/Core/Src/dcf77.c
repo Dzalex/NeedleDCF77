@@ -8,6 +8,7 @@
 #include "dcf77.h"
 #include "main.h"
 #include "tim.h"
+#include "stdbool.h"
 
 /* Constants related to DCF77 protocol */
 /* Min and max values from da6180B.pdf */
@@ -19,29 +20,7 @@ const uint16_t ONE_PULS_DURATION_MIN = 140;
 const uint16_t MINUTE_MARK_PULS_DURATION_MAX = 2100;
 const uint16_t MINUTE_MARK_PULS_DURATION_MIN = 1600;
 
-typedef union {
-	struct {
-		 uint64_t startOfMinute		:1;
-		 uint64_t prefix     		:16;
-		 uint64_t CEST       		:1;
-		 uint64_t CET        		:1;
-		 uint64_t leapSecond 		:1;
-		 uint64_t startEncoding		:1;
-		 uint64_t Min        		:7;
-		 uint64_t P1         		:1;
-		 uint64_t Hour       		:6;
-		 uint64_t P2         		:1;
-		 uint64_t Day        		:6;
-		 uint64_t Weekday    		:3;
-		 uint64_t Month      		:5;
-		 uint64_t Year       		:8;
-		 uint64_t P3         		:1;
-    } DCF77Buffer_s;
-	uint64_t DCF77bits;
-} DCF77Buffer_t;
-
 enum PulseType {ZERO_PULSE = 0, ONE_PULSE = 1, MINUTE_PULSE, UNKNOWN_PULSE};
-enum BufferErrors {INTEGRITY_OK = 0, FIRST_BIT_NOT_ONE,  START_OF_ENC_NOT_ONE, WRONG_MIN_PARITY, WRONG_HOUR_PARITY, WRONG_DATE_PARITY};
 
 const uint32_t SYNCHRONISATION_TIMEOUT = 5 * 60 * 1000;	// Sync time of 5 minutes max
 
@@ -50,8 +29,8 @@ static void DCF77_EnableReceiver(void);
 static void DCF77_DisableReceiver(void);
 static void DCF77_StartICTimers(void);
 static void DCF77_StopICTimers(void);
+
 enum PulseType DCF77_CheckPulseType(DCF77_TimeSample_t* sampleToCheck);
-enum BufferErrors DCF77_CheckBufferIntegrity(DCF77Buffer_t* DCF77Buffer);
 void DCF77_FillBufferOnPosition(DCF77Buffer_t* DCF77Buffer, uint8_t currentBit, uint32_t valueOnPosition);
 
 void DCF77_Initialize(void)
@@ -83,7 +62,7 @@ ErrorStatus DCF77_GetTimeAndDate(RTC_TimeTypeDef* timeBuffer, RTC_DateTypeDef* d
 		case MINUTE_PULSE:
 			if(DCF77_CheckBufferIntegrity(&DCF77Buffer) == INTEGRITY_OK)
 			{
-				;
+				// Calculate time - we might have complete buffer;
 			}
 			DCF77Buffer.DCF77bits = 0;
 			currentBit = 59;
@@ -125,7 +104,11 @@ enum PulseType DCF77_CheckPulseType(DCF77_TimeSample_t* sampleToCheck)
 
 enum BufferErrors DCF77_CheckBufferIntegrity(DCF77Buffer_t* DCF77Buffer)
 {
-
+	if(false == DCF77_IsFirstBitOne(DCF77Buffer))
+	{
+		return FIRST_BIT_NOT_ONE;
+	}
+	//if(false == DCF77_77....)
 	return INTEGRITY_OK;
 }
 
@@ -155,6 +138,33 @@ static void DCF77_StopICTimers(void)
 {
 	HAL_TIM_IC_Stop_IT(&htim22, TIM_CHANNEL_1);   	// main channel
 	HAL_TIM_IC_Stop(&htim22, TIM_CHANNEL_2);   		// indirect channel
+}
+
+bool DCF77_IsFirstBitOne(DCF77Buffer_t* DCF77Buffer)
+{
+	return DCF77Buffer->DCF77Buffer_s.startOfMinute;
+}
+bool DCF77_IsStartOfEncodingOne(DCF77Buffer_t* DCF77Buffer)
+{
+	return DCF77Buffer->DCF77Buffer_s.startEncoding;
+}
+bool DCF77_IsMinuteParityOk(DCF77Buffer_t* DCF77Buffer)
+{
+	int popCount = __builtin_popcount(DCF77Buffer->DCF77Buffer_s.Min);
+	return !((popCount + DCF77Buffer->DCF77Buffer_s.P1) % 2);
+}
+bool DCF77_IsHourParityOk(DCF77Buffer_t* DCF77Buffer)
+{
+	int popCount = __builtin_popcount(DCF77Buffer->DCF77Buffer_s.Hour);
+	return !((popCount + DCF77Buffer->DCF77Buffer_s.P2) % 2);
+}
+bool DCF77_IsDateParityOk(DCF77Buffer_t* DCF77Buffer)
+{
+	int popCount = 	__builtin_popcount(DCF77Buffer->DCF77Buffer_s.Day);
+	popCount += 	__builtin_popcount(DCF77Buffer->DCF77Buffer_s.Weekday);
+	popCount +=		__builtin_popcount(DCF77Buffer->DCF77Buffer_s.Month);
+	popCount +=		__builtin_popcount(DCF77Buffer->DCF77Buffer_s.Year);
+	return !((popCount + DCF77Buffer->DCF77Buffer_s.P3) % 2);
 }
 
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
