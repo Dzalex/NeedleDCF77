@@ -9,9 +9,9 @@
 
 enum BufferErrors DCF77_CheckBufferIntegrity(DCF77Buffer_t* DCF77Buffer)
 {
-	if(false == DCF77_IsFirstBitOne(DCF77Buffer))
+	if(false == DCF77_IsFirstBitZero(DCF77Buffer))
 	{
-		return FIRST_BIT_NOT_ONE;
+		return FIRST_BIT_NOT_ZERO;
 	}
 	//if(false == DCF77_77....)
 	return INTEGRITY_OK;
@@ -25,9 +25,9 @@ void DCF77_FillBufferOnPosition(DCF77Buffer_t* DCF77Buffer, uint8_t currentBit, 
 
 
 
-bool DCF77_IsFirstBitOne(DCF77Buffer_t* DCF77Buffer)
+bool DCF77_IsFirstBitZero(DCF77Buffer_t* DCF77Buffer)
 {
-	return DCF77Buffer->DCF77Buffer_s.startOfMinute;
+	return 0 == DCF77Buffer->DCF77Buffer_s.startOfMinute;
 }
 bool DCF77_IsStartOfEncodingOne(DCF77Buffer_t* DCF77Buffer)
 {
