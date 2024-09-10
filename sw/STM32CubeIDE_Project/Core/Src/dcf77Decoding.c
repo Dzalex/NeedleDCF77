@@ -97,4 +97,22 @@ bool DCF77_IsDateParityOk(DCF77Buffer_t* DCF77Buffer)
 	return !((popCount + DCF77Buffer->DCF77Buffer_s.P3) % 2);
 }
 
+void DCF77_DecodeTimeToRTCTimeBuffer(DCF77Buffer_t* DCF77Buffer, CopyOf_RTC_TimeTypeDef* timeBuffer)
+{
+	timeBuffer -> Minutes = ( (DCF77Buffer -> DCF77Buffer_s.Min) & (1UL << 0) ) + \
+							( (DCF77Buffer -> DCF77Buffer_s.Min) & (1UL << 1) ) + \
+							( (DCF77Buffer -> DCF77Buffer_s.Min) & (1UL << 2) ) + \
+							( (DCF77Buffer -> DCF77Buffer_s.Min) & (1UL << 3) ) + \
+							( ( (DCF77Buffer -> DCF77Buffer_s.Min) & (1UL << 4) ) >> 4 ) * 10 +\
+							( ( (DCF77Buffer -> DCF77Buffer_s.Min) & (1UL << 5) ) >> 5 ) * 20 +\
+							( ( (DCF77Buffer -> DCF77Buffer_s.Min) & (1UL << 6) ) >> 6 ) * 40;
 
+	timeBuffer -> Hours =	( (DCF77Buffer -> DCF77Buffer_s.Hour) & (1UL << 0) ) + \
+							( (DCF77Buffer -> DCF77Buffer_s.Hour) & (1UL << 1) ) + \
+							( (DCF77Buffer -> DCF77Buffer_s.Hour) & (1UL << 2) ) + \
+							( (DCF77Buffer -> DCF77Buffer_s.Hour) & (1UL << 3) ) + \
+							( ( (DCF77Buffer -> DCF77Buffer_s.Hour) & (1UL << 4) )  >> 4 ) * 10 + \
+							( ( (DCF77Buffer -> DCF77Buffer_s.Hour) & (1UL << 5) )  >> 5 ) * 20;
+
+	timeBuffer -> Seconds = 0;
+}

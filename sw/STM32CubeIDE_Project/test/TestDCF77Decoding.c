@@ -1,7 +1,8 @@
 #include "unity.h"
 #include "../Core/Inc/dcf77Decoding.h"
 
-DCF77Buffer_t testBufferConsistent1 = {.DCF77bits = 0b0000000010010001001010010000101011000111001100100101110101000110}; //10.09.2024
+//DCF77Buffer_t testBufferConsistent1 = {.DCF77bits = 0b0000000010010001001010010000101011000111001100100101110101000110}; //10.09.2024
+DCF77Buffer_t testBufferConsistent1 = {.DCF77bits = 0b0000000010010001001010010000110001101000100100100100011001011110};
 DCF77Buffer_t testBufferConsistent2 = {.DCF77bits = 0b0000000010010001001010010000101011001000010100100010110001111000}; //10.09.2024
 
 void setUp(void)
@@ -80,3 +81,19 @@ void test_IsDateParityOk(void)
     TEST_ASSERT_TRUE( DCF77_IsDateParityOk(&hourParityOk1) );
     TEST_ASSERT_TRUE( DCF77_IsDateParityOk(&hourParityOk2) );
 }
+
+DCF77Buffer_t sampleWith23h44m10_9_24 = {.DCF77bits = 0b0000000010010001001010010000110001101000100100100100011001011110};
+
+void test_DecodeTime(void)
+{
+    TEST_ASSERT_EQUAL(INTEGRITY_OK, DCF77_CheckBufferIntegrity(&sampleWith23h44m10_9_24) );
+    CopyOf_RTC_TimeTypeDef time23h44m = {.Hours=23, .Minutes = 44};
+
+    CopyOf_RTC_TimeTypeDef returnedTime = {0};
+    DCF77_DecodeTimeToRTCTimeBuffer(&sampleWith23h44m10_9_24, &returnedTime);
+
+    TEST_ASSERT_EQUAL(time23h44m.Minutes, returnedTime.Minutes);
+    TEST_ASSERT_EQUAL(time23h44m.Hours, returnedTime.Hours);
+    TEST_ASSERT_EQUAL_MEMORY(&time23h44m, &returnedTime, sizeof(CopyOf_RTC_TimeTypeDef));
+}
+

@@ -38,6 +38,22 @@ typedef union {
 	uint64_t DCF77bits;
 } DCF77Buffer_t;
 
+/**
+  * @brief  This is ugly, but this is only way to not include HAL file
+  * which will make tests impossible to build
+  */
+typedef struct
+{
+  uint8_t Hours;
+  uint8_t Minutes;
+  uint8_t Seconds;
+  uint8_t TimeFormat;
+  uint32_t SubSeconds;
+  uint32_t SecondFraction;
+  uint32_t DayLightSaving;
+  uint32_t StoreOperation;
+} CopyOf_RTC_TimeTypeDef;
+
 enum PulseType {ZERO_PULSE = 0, ONE_PULSE = 1, MINUTE_PULSE, UNKNOWN_PULSE};
 enum BufferErrors {INTEGRITY_OK = 0, FIRST_BIT_NOT_ZERO,  START_OF_ENC_NOT_ONE, WRONG_MIN_PARITY, WRONG_HOUR_PARITY, WRONG_DATE_PARITY};
 
@@ -49,5 +65,6 @@ bool DCF77_IsStartOfEncodingOne(DCF77Buffer_t* DCF77Buffer);
 bool DCF77_IsMinuteParityOk(DCF77Buffer_t* DCF77Buffer);
 bool DCF77_IsHourParityOk(DCF77Buffer_t* DCF77Buffer);
 bool DCF77_IsDateParityOk(DCF77Buffer_t* DCF77Buffer);
+void DCF77_DecodeTimeToRTCTimeBuffer(DCF77Buffer_t* DCF77Buffer, CopyOf_RTC_TimeTypeDef* timeBuffer);
 
 #endif /* INC_DCF77DECODING_H_ */
