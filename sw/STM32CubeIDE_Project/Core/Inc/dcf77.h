@@ -15,12 +15,6 @@
 
 extern osMessageQueueId_t DCF77_TimeSamplesQueueHandle;
 
-typedef struct DCF77_TimeSample
-{
-	uint16_t signalLength;
-	uint16_t pulseLength;
-} DCF77_TimeSample_t;
-
 void DCF77_Initialize(void);
 void DCF77_DeInitialize(void);
 ErrorStatus DCF77_GetTimeAndDate(RTC_TimeTypeDef* timeBuffer, RTC_DateTypeDef* dateBuffer);

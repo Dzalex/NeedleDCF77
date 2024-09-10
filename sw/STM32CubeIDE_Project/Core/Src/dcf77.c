@@ -11,18 +11,6 @@
 #include "tim.h"
 #include "stdbool.h"
 
-/* Constants related to DCF77 protocol */
-/* Min and max values from da6180B.pdf */
-const uint16_t ZERO_PULS_DURATION_MAX = 130;
-const uint16_t ZERO_PULS_DURATION_MIN = 40;
-const uint16_t ONE_PULS_DURATION_MAX = 250;
-const uint16_t ONE_PULS_DURATION_MIN = 140;
-
-const uint16_t MINUTE_MARK_PULS_DURATION_MAX = 2100;
-const uint16_t MINUTE_MARK_PULS_DURATION_MIN = 1600;
-
-enum PulseType {ZERO_PULSE = 0, ONE_PULSE = 1, MINUTE_PULSE, UNKNOWN_PULSE};
-
 const uint32_t SYNCHRONISATION_TIMEOUT = 5 * 60 * 1000;	// Sync time of 5 minutes max
 
 /* Forward declaration of local functions */
@@ -79,27 +67,6 @@ ErrorStatus DCF77_GetTimeAndDate(RTC_TimeTypeDef* timeBuffer, RTC_DateTypeDef* d
 		}
 	}
 	return ERROR;
-}
-
-enum PulseType DCF77_CheckPulseType(DCF77_TimeSample_t* sampleToCheck)
-{
-	if(		sampleToCheck->pulseLength > ZERO_PULS_DURATION_MIN && \
-			sampleToCheck->pulseLength < ZERO_PULS_DURATION_MAX)
-	{
-		return ZERO_PULSE;
-	}
-	else if(sampleToCheck->pulseLength > ONE_PULS_DURATION_MIN && \
-			sampleToCheck->pulseLength < ONE_PULS_DURATION_MAX)
-	{
-		return ONE_PULSE;
-	}
-	else if(sampleToCheck->pulseLength > MINUTE_MARK_PULS_DURATION_MIN && \
-			sampleToCheck->pulseLength < MINUTE_MARK_PULS_DURATION_MAX)
-	{
-		return MINUTE_PULSE;
-	}
-
-	return UNKNOWN_PULSE;
 }
 
 static void DCF77_EnableReceiver(void)

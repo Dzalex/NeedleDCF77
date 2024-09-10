@@ -12,6 +12,21 @@ void tearDown(void)
 {
 }
 
+void test_CheckPulseType(void)
+{
+    DCF77_TimeSample_t zeroPulse = {.pulseLength = 120, .signalLength = 998};
+    DCF77_TimeSample_t onePulse = {.pulseLength = 218, .signalLength = 1003};
+    DCF77_TimeSample_t unknownPulse1 = {.pulseLength = 12, .signalLength = 22};
+    DCF77_TimeSample_t unknownPulse2 = {.pulseLength = 330, .signalLength = 500};
+    DCF77_TimeSample_t minutemarkPulse1 = {.pulseLength = 100, .signalLength = 1900};
+
+    TEST_ASSERT_EQUAL(ZERO_PULSE, DCF77_CheckPulseType(&zeroPulse));
+    TEST_ASSERT_EQUAL(ONE_PULSE, DCF77_CheckPulseType(&onePulse));
+    TEST_ASSERT_EQUAL(UNKNOWN_PULSE, DCF77_CheckPulseType(&unknownPulse1));
+    TEST_ASSERT_EQUAL(UNKNOWN_PULSE, DCF77_CheckPulseType(&unknownPulse2));
+    TEST_ASSERT_EQUAL(MINUTE_PULSE, DCF77_CheckPulseType(&minutemarkPulse1));
+}
+
 void test_IsFirstBitOne(void)
 {
     DCF77Buffer_t FirstBitIsZero = {.DCF77bits = 0xFFFFFFFFFFFFFFFF};

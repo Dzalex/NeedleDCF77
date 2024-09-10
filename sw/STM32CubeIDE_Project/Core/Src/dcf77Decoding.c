@@ -7,6 +7,38 @@
 
 #include "dcf77Decoding.h"
 
+/* Constants related to DCF77 protocol */
+/* Min and max values from da6180B.pdf */
+const uint16_t ZERO_PULS_DURATION_MAX = 130;
+const uint16_t ZERO_PULS_DURATION_MIN = 40;
+const uint16_t ONE_PULS_DURATION_MAX = 250;
+const uint16_t ONE_PULS_DURATION_MIN = 140;
+
+const uint16_t MINUTE_MARK_PULS_DURATION_MAX = 2100;
+const uint16_t MINUTE_MARK_PULS_DURATION_MIN = 1600;
+
+enum PulseType DCF77_CheckPulseType(DCF77_TimeSample_t* sampleToCheck)
+{
+	if(		sampleToCheck->pulseLength > ZERO_PULS_DURATION_MIN && \
+			sampleToCheck->pulseLength < ZERO_PULS_DURATION_MAX)
+	{
+		// Special case on 58th pulse is that is always 0 and that minute mark is determined by signal Length
+		if( sampleToCheck->signalLength > MINUTE_MARK_PULS_DURATION_MIN && \
+			sampleToCheck->signalLength < MINUTE_MARK_PULS_DURATION_MAX)
+		{
+			return MINUTE_PULSE;
+		}
+		return ZERO_PULSE;
+	}
+	else if(sampleToCheck->pulseLength > ONE_PULS_DURATION_MIN && \
+			sampleToCheck->pulseLength < ONE_PULS_DURATION_MAX)
+	{
+		return ONE_PULSE;
+	}
+
+	return UNKNOWN_PULSE;
+}
+
 enum BufferErrors DCF77_CheckBufferIntegrity(DCF77Buffer_t* DCF77Buffer)
 {
 	if(false == DCF77_IsFirstBitZero(DCF77Buffer))
