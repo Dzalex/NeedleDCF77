@@ -1,6 +1,9 @@
 #include "unity.h"
 #include "../Core/Inc/dcf77Decoding.h"
 
+DCF77Buffer_t testBufferConsistent1 = {.DCF77bits = 0b0000000010010001001010010000101011000111001100100101110101000110}; //10.09.2024
+DCF77Buffer_t testBufferConsistent2 = {.DCF77bits = 0b0000000010010001001010010000101011001000010100100010110001111000}; //10.09.2024
+
 void setUp(void)
 {
 }
@@ -21,3 +24,44 @@ void test_IsFirstBitOne(void)
     TEST_ASSERT_TRUE( DCF77_IsFirstBitZero(&FirstBitIsZero) );
 }
 
+void test_IsStartOfEncodingOne(void)
+{
+    DCF77Buffer_t startOfEncodingIsZero = {.DCF77bits = 0xFFFFFFFFFFFFFFFF};
+    DCF77Buffer_t startOfEncodingIsOne = {.DCF77bits = 0};
+
+    // Bit #20 is Encoding bit, always 1
+    startOfEncodingIsZero.DCF77bits = 0 << 20;
+    startOfEncodingIsOne.DCF77bits = 1 << 20;
+
+    TEST_ASSERT_FALSE( DCF77_IsStartOfEncodingOne(&startOfEncodingIsZero) );
+    TEST_ASSERT_TRUE( DCF77_IsStartOfEncodingOne(&startOfEncodingIsOne) );
+}
+
+void test_IsMinuteParityOk(void)
+{
+    DCF77Buffer_t minuteParityOk = testBufferConsistent1;
+    DCF77Buffer_t minuteParityNotOk = { .DCF77bits = testBufferConsistent2.DCF77bits ^ (1UL << 28) }; 
+
+    TEST_ASSERT_FALSE( DCF77_IsMinuteParityOk(&minuteParityNotOk) );
+    TEST_ASSERT_TRUE( DCF77_IsMinuteParityOk(&minuteParityOk) );
+}
+
+void test_IsHourParityOk(void)
+{
+    DCF77Buffer_t hourParityOk = testBufferConsistent1;
+    DCF77Buffer_t hourParityNotOk = { .DCF77bits = testBufferConsistent2.DCF77bits ^ (1UL << 35) };
+
+    TEST_ASSERT_FALSE( DCF77_IsHourParityOk(&hourParityNotOk) );
+    TEST_ASSERT_TRUE( DCF77_IsHourParityOk(&hourParityOk) );
+}
+
+void test_IsDateParityOk(void)
+{
+    DCF77Buffer_t hourParityOk1 = testBufferConsistent1;
+    DCF77Buffer_t hourParityOk2 = testBufferConsistent2;
+    DCF77Buffer_t hourParityNotOk = { .DCF77bits = testBufferConsistent1.DCF77bits ^ (1UL << 58) };
+
+    TEST_ASSERT_FALSE( DCF77_IsDateParityOk(&hourParityNotOk) );
+    TEST_ASSERT_TRUE( DCF77_IsDateParityOk(&hourParityOk1) );
+    TEST_ASSERT_TRUE( DCF77_IsDateParityOk(&hourParityOk2) );
+}
