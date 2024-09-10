@@ -6,6 +6,7 @@
  */
 
 #include "dcf77.h"
+#include "dcf77Decoding.h"
 #include "main.h"
 #include "tim.h"
 #include "stdbool.h"
@@ -31,7 +32,6 @@ static void DCF77_StartICTimers(void);
 static void DCF77_StopICTimers(void);
 
 enum PulseType DCF77_CheckPulseType(DCF77_TimeSample_t* sampleToCheck);
-void DCF77_FillBufferOnPosition(DCF77Buffer_t* DCF77Buffer, uint8_t currentBit, uint32_t valueOnPosition);
 
 void DCF77_Initialize(void)
 {
@@ -64,7 +64,7 @@ ErrorStatus DCF77_GetTimeAndDate(RTC_TimeTypeDef* timeBuffer, RTC_DateTypeDef* d
 			{
 				// Calculate time - we might have complete buffer;
 			}
-			DCF77Buffer.DCF77bits = 0;
+			DCF77Buffer.DCF77bits = 0UL;
 			currentBit = 59;
 		case UNKNOWN_PULSE:
 			continue;
@@ -74,7 +74,7 @@ ErrorStatus DCF77_GetTimeAndDate(RTC_TimeTypeDef* timeBuffer, RTC_DateTypeDef* d
 			{
 				currentBit = 0;
 			}
-			DCF77_FillBufferOnPosition(&DCF77Buffer, currentBit, (uint32_t)currentPulseType);
+			DCF77_SetBufferBitOnPosition(&DCF77Buffer, currentBit);
 			currentBit++;
 		}
 	}

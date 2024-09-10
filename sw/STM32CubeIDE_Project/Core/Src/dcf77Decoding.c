@@ -13,17 +13,30 @@ enum BufferErrors DCF77_CheckBufferIntegrity(DCF77Buffer_t* DCF77Buffer)
 	{
 		return FIRST_BIT_NOT_ZERO;
 	}
-	//if(false == DCF77_77....)
+	if(false == DCF77_IsStartOfEncodingOne(DCF77Buffer))
+	{
+		return START_OF_ENC_NOT_ONE;
+	}
+	if(false == DCF77_IsMinuteParityOk(DCF77Buffer))
+	{
+		return WRONG_MIN_PARITY;
+	}
+	if(false == DCF77_IsHourParityOk(DCF77Buffer))
+	{
+		return WRONG_HOUR_PARITY;
+	}
+	if(false == DCF77_IsDateParityOk(DCF77Buffer))
+	{
+		return WRONG_DATE_PARITY;
+	}
+
 	return INTEGRITY_OK;
 }
 
-void DCF77_FillBufferOnPosition(DCF77Buffer_t* DCF77Buffer, uint8_t currentBit, uint32_t valueOnPosition)
+void DCF77_SetBufferBitOnPosition(DCF77Buffer_t* DCF77Buffer, uint8_t currentBit)
 {
-	uint64_t mask = 1 << currentBit;
-	DCF77Buffer->DCF77bits = (DCF77Buffer->DCF77bits & ~mask) | (valueOnPosition << currentBit);
+	DCF77Buffer->DCF77bits = DCF77Buffer->DCF77bits | (1UL << currentBit);
 }
-
-
 
 bool DCF77_IsFirstBitZero(DCF77Buffer_t* DCF77Buffer)
 {

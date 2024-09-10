@@ -35,6 +35,7 @@ typedef union {
 enum BufferErrors {INTEGRITY_OK = 0, FIRST_BIT_NOT_ZERO,  START_OF_ENC_NOT_ONE, WRONG_MIN_PARITY, WRONG_HOUR_PARITY, WRONG_DATE_PARITY};
 
 enum BufferErrors DCF77_CheckBufferIntegrity(DCF77Buffer_t* DCF77Buffer);
+void DCF77_SetBufferBitOnPosition(DCF77Buffer_t* DCF77Buffer, uint8_t currentBit);
 bool DCF77_IsFirstBitZero(DCF77Buffer_t* DCF77Buffer);
 bool DCF77_IsStartOfEncodingOne(DCF77Buffer_t* DCF77Buffer);
 bool DCF77_IsMinuteParityOk(DCF77Buffer_t* DCF77Buffer);
