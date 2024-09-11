@@ -193,9 +193,6 @@ void StartInterfaceTask(void *argument)
 				IF_ShowDateOnVFD(currentDate);
 			}
 			break;
-		case INTERFACE_2AM_FLAG:
-			/* TODO: At this event we unblock DCF77 task to start the sync! */
-			break;
 		case INTERFACE_BUTTON_PRESS_FLAG:
 			if(showingDate == false)
 			{
@@ -207,8 +204,8 @@ void StartInterfaceTask(void *argument)
 			osTimerStart(timerButtonPeriodicCheck100msHandle, 100);
 			break;
 		case INTERFACE_BUTTON_HOLD_FLAG:
-			/* TODO: At this event we unblock DCF77 task to start the sync! */
-			VFD_PrintCharacterAtPosition('s', 8);
+		case INTERFACE_2AM_FLAG:
+			osThreadResume(DCF77TaskHandle);
 		break;
 		}
 
