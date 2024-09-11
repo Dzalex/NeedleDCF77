@@ -54,6 +54,17 @@ typedef struct
   uint32_t StoreOperation;
 } CopyOf_RTC_TimeTypeDef;
 
+/**
+  * @brief  RTC Date structure definition, ugly as above
+  */
+typedef struct
+{
+  uint8_t WeekDay;
+  uint8_t Month;
+  uint8_t Date;
+  uint8_t Year;
+} CopyOf_RTC_DateTypeDef;
+
 enum PulseType {ZERO_PULSE = 0, ONE_PULSE = 1, MINUTE_PULSE, UNKNOWN_PULSE};
 enum BufferErrors {INTEGRITY_OK = 0, FIRST_BIT_NOT_ZERO,  START_OF_ENC_NOT_ONE, WRONG_MIN_PARITY, WRONG_HOUR_PARITY, WRONG_DATE_PARITY};
 
@@ -66,5 +77,6 @@ bool DCF77_IsMinuteParityOk(DCF77Buffer_t* DCF77Buffer);
 bool DCF77_IsHourParityOk(DCF77Buffer_t* DCF77Buffer);
 bool DCF77_IsDateParityOk(DCF77Buffer_t* DCF77Buffer);
 void DCF77_DecodeTimeToRTCTimeBuffer(DCF77Buffer_t* DCF77Buffer, CopyOf_RTC_TimeTypeDef* timeBuffer);
+void DCF77_DecodeDateToRTCDateBuffer(DCF77Buffer_t* DCF77Buffer, CopyOf_RTC_DateTypeDef* dateBuffer);
 
 #endif /* INC_DCF77DECODING_H_ */

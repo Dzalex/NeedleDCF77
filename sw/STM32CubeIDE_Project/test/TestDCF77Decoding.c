@@ -97,3 +97,12 @@ void test_DecodeTime(void)
     TEST_ASSERT_EQUAL_MEMORY(&time23h44m, &returnedTime, sizeof(CopyOf_RTC_TimeTypeDef));
 }
 
+void test_DecodeDate(void)
+{
+    TEST_ASSERT_EQUAL(INTEGRITY_OK, DCF77_CheckBufferIntegrity(&sampleWith23h44m10_9_24) );
+    CopyOf_RTC_DateTypeDef date10_09_24 = {.Date = 10, .Month = 9, .Year = 24, .WeekDay = 2};
+
+    CopyOf_RTC_DateTypeDef returnedDate = {0};
+    DCF77_DecodeDateToRTCDateBuffer(&sampleWith23h44m10_9_24, &returnedDate);
+    TEST_ASSERT_EQUAL_MEMORY(&date10_09_24, &returnedDate, sizeof(CopyOf_RTC_DateTypeDef));
+}
