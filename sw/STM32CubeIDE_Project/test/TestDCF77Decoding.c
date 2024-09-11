@@ -87,7 +87,7 @@ DCF77Buffer_t sampleWith23h44m10_9_24 = {.DCF77bits = 0b000000001001000100101001
 void test_DecodeTime(void)
 {
     TEST_ASSERT_EQUAL(INTEGRITY_OK, DCF77_CheckBufferIntegrity(&sampleWith23h44m10_9_24) );
-    CopyOf_RTC_TimeTypeDef time23h44m = {.Hours=23, .Minutes = 44};
+    CopyOf_RTC_TimeTypeDef time23h44m = {.Hours=11, .Minutes = 44, .TimeFormat = RTC_HOURFORMAT12_PM};
 
     CopyOf_RTC_TimeTypeDef returnedTime = {0};
     DCF77_DecodeTimeToRTCTimeBuffer(&sampleWith23h44m10_9_24, &returnedTime);

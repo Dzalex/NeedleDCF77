@@ -38,6 +38,9 @@ typedef union {
 	uint64_t DCF77bits;
 } DCF77Buffer_t;
 
+#define RTC_HOURFORMAT12_AM            ((uint8_t)0x00)
+#define RTC_HOURFORMAT12_PM            ((uint8_t)0x01)
+
 /**
   * @brief  This is ugly, but this is only way to not include HAL file
   * which will make tests impossible to build
