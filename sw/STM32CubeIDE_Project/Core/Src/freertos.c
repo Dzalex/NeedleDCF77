@@ -236,7 +236,11 @@ void StartDCF77Task(void *argument)
   for(;;)
   {
 	  DCF77_Initialize();
-	  DCF77_GetTimeAndDate(&timeToSet, &dateToSet);
+	  if (SUCCESS == DCF77_GetTimeAndDate(&timeToSet, &dateToSet))
+	  {
+		  HAL_RTC_SetTime(&hrtc, &timeToSet, RTC_FORMAT_BIN);
+		  HAL_RTC_SetDate(&hrtc, &dateToSet, RTC_FORMAT_BIN);
+	  }
 	  DCF77_DeInitialize();
 	  osThreadSuspend(DCF77TaskHandle);
 	  osDelay(1);
