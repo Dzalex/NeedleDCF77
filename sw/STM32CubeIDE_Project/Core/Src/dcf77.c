@@ -43,7 +43,7 @@ ErrorStatus DCF77_GetTimeAndDate(RTC_TimeTypeDef* timeBuffer, RTC_DateTypeDef* d
 
 	while(timeoutTickCount > osKernelGetTickCount())
 	{
-		osMessageQueueGet(DCF77_TimeSamplesQueueHandle, &newSample, NULL, 0U);
+		osMessageQueueGet(DCF77_TimeSamplesQueueHandle, &newSample, NULL, 10U);
 		currentPulseType = DCF77_CheckPulseType(&newSample);
 		switch(currentPulseType)
 		{

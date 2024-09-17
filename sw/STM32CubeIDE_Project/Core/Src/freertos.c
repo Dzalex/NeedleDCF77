@@ -205,6 +205,9 @@ void StartInterfaceTask(void *argument)
 			break;
 		case INTERFACE_BUTTON_HOLD_FLAG:
 		case INTERFACE_2AM_FLAG:
+			VFD_PowerOffAndDeinitialize();
+			showingDate = false;
+
 			osThreadResume(DCF77TaskHandle);
 		break;
 		}
@@ -227,6 +230,9 @@ void StartDCF77Task(void *argument)
 	RTC_TimeTypeDef timeToSet = {0};
 	RTC_DateTypeDef dateToSet = {0};
   /* Infinite loop */
+
+  osThreadSuspend(DCF77TaskHandle);
+
   for(;;)
   {
 	  DCF77_Initialize();
