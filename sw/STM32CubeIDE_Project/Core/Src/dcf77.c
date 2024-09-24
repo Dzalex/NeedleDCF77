@@ -58,8 +58,8 @@ ErrorStatus DCF77_GetTimeAndDate(RTC_TimeTypeDef* timeBuffer, RTC_DateTypeDef* d
 					DCF77_DecodeDateToRTCDateBuffer(&DCF77Buffer, (CopyOf_RTC_DateTypeDef*)&dateBuffer);
 					return SUCCESS;
 				}
-				DCF77Buffer.DCF77bits = 0UL;
-				currentBit = 0;
+				DCF77Buffer.DCF77bits = 0ULL;
+				currentBit = 1;
 				break;
 			case ZERO_PULSE:
 				currentBit++;
