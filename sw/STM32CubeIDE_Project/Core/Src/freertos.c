@@ -205,6 +205,7 @@ void StartInterfaceTask(void *argument)
 			break;
 		case INTERFACE_BUTTON_HOLD_FLAG:
 		case INTERFACE_2AM_FLAG:
+			NDL_DisableAllNeedles();
 			VFD_PowerOffAndDeinitialize();
 			showingDate = false;
 
@@ -242,6 +243,7 @@ void StartDCF77Task(void *argument)
 		  HAL_RTC_SetDate(&hrtc, &dateToSet, RTC_FORMAT_BIN);
 	  }
 	  DCF77_DeInitialize();
+	  NDL_EnableAllNeedles();
 	  osThreadSuspend(DCF77TaskHandle);
 	  osDelay(1);
   }
