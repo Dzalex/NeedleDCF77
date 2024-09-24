@@ -54,8 +54,8 @@ ErrorStatus DCF77_GetTimeAndDate(RTC_TimeTypeDef* timeBuffer, RTC_DateTypeDef* d
 				{
 					// Calculate time - we have complete buffer;
 					// Casting to CopyOf_ types so we know what are we doing.
-					DCF77_DecodeTimeToRTCTimeBuffer(&DCF77Buffer, (CopyOf_RTC_TimeTypeDef*)&timeBuffer);
-					DCF77_DecodeDateToRTCDateBuffer(&DCF77Buffer, (CopyOf_RTC_DateTypeDef*)&dateBuffer);
+					DCF77_DecodeTimeToRTCTimeBuffer(&DCF77Buffer, (CopyOf_RTC_TimeTypeDef*)timeBuffer);
+					DCF77_DecodeDateToRTCDateBuffer(&DCF77Buffer, (CopyOf_RTC_DateTypeDef*)dateBuffer);
 					return SUCCESS;
 				}
 				DCF77Buffer.DCF77bits = 0ULL;
