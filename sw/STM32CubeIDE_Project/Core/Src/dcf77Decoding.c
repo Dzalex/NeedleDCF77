@@ -67,7 +67,7 @@ enum BufferErrors DCF77_CheckBufferIntegrity(DCF77Buffer_t* DCF77Buffer)
 
 void DCF77_SetBufferBitOnPosition(DCF77Buffer_t* DCF77Buffer, uint8_t currentBit)
 {
-	DCF77Buffer->DCF77bits = DCF77Buffer->DCF77bits | (1UL << currentBit);
+	DCF77Buffer->DCF77bits = DCF77Buffer->DCF77bits | (1ULL << currentBit);
 }
 
 bool DCF77_IsFirstBitZero(DCF77Buffer_t* DCF77Buffer)
@@ -99,20 +99,14 @@ bool DCF77_IsDateParityOk(DCF77Buffer_t* DCF77Buffer)
 
 void DCF77_DecodeTimeToRTCTimeBuffer(DCF77Buffer_t* DCF77Buffer, CopyOf_RTC_TimeTypeDef* timeBuffer)
 {
-	timeBuffer -> Minutes = ( (DCF77Buffer -> DCF77Buffer_s.Min) & (1UL << 0) ) + \
-							( (DCF77Buffer -> DCF77Buffer_s.Min) & (1UL << 1) ) + \
-							( (DCF77Buffer -> DCF77Buffer_s.Min) & (1UL << 2) ) + \
-							( (DCF77Buffer -> DCF77Buffer_s.Min) & (1UL << 3) ) + \
-							( ( (DCF77Buffer -> DCF77Buffer_s.Min) & (1UL << 4) ) >> 4 ) * 10 +\
-							( ( (DCF77Buffer -> DCF77Buffer_s.Min) & (1UL << 5) ) >> 5 ) * 20 +\
-							( ( (DCF77Buffer -> DCF77Buffer_s.Min) & (1UL << 6) ) >> 6 ) * 40;
+	timeBuffer -> Minutes = ( DCF77Buffer -> DCF77Buffer_s.Min & 0xF ) + \
+							( ( (DCF77Buffer -> DCF77Buffer_s.Min) & (1ULL << 4) ) >> 4 ) * 10 +\
+							( ( (DCF77Buffer -> DCF77Buffer_s.Min) & (1ULL << 5) ) >> 5 ) * 20 +\
+							( ( (DCF77Buffer -> DCF77Buffer_s.Min) & (1ULL << 6) ) >> 6 ) * 40;
 
-	timeBuffer -> Hours =	( (DCF77Buffer -> DCF77Buffer_s.Hour) & (1UL << 0) ) + \
-							( (DCF77Buffer -> DCF77Buffer_s.Hour) & (1UL << 1) ) + \
-							( (DCF77Buffer -> DCF77Buffer_s.Hour) & (1UL << 2) ) + \
-							( (DCF77Buffer -> DCF77Buffer_s.Hour) & (1UL << 3) ) + \
-							( ( (DCF77Buffer -> DCF77Buffer_s.Hour) & (1UL << 4) )  >> 4 ) * 10 + \
-							( ( (DCF77Buffer -> DCF77Buffer_s.Hour) & (1UL << 5) )  >> 5 ) * 20;
+	timeBuffer -> Hours =	( DCF77Buffer -> DCF77Buffer_s.Hour & 0xF ) + \
+							( ( (DCF77Buffer -> DCF77Buffer_s.Hour) & (1ULL << 4) )  >> 4 ) * 10 + \
+							( ( (DCF77Buffer -> DCF77Buffer_s.Hour) & (1ULL << 5) )  >> 5 ) * 20;
 
 	if(12 < timeBuffer -> Hours)
 	{
@@ -129,29 +123,18 @@ void DCF77_DecodeTimeToRTCTimeBuffer(DCF77Buffer_t* DCF77Buffer, CopyOf_RTC_Time
 
 void DCF77_DecodeDateToRTCDateBuffer(DCF77Buffer_t* DCF77Buffer, CopyOf_RTC_DateTypeDef* dateBuffer)
 {
-	dateBuffer -> Date = 	( (DCF77Buffer -> DCF77Buffer_s.Day) & (1UL << 0) ) + \
-							( (DCF77Buffer -> DCF77Buffer_s.Day) & (1UL << 1) ) + \
-							( (DCF77Buffer -> DCF77Buffer_s.Day) & (1UL << 2) ) + \
-							( (DCF77Buffer -> DCF77Buffer_s.Day) & (1UL << 3) ) + \
-							( ( (DCF77Buffer -> DCF77Buffer_s.Day) & (1UL << 4) ) >> 4 ) * 10 +\
-							( ( (DCF77Buffer -> DCF77Buffer_s.Day) & (1UL << 5) ) >> 5 ) * 20;
+	dateBuffer -> Date = 	( DCF77Buffer -> DCF77Buffer_s.Day & 0xF ) + \
+							( ( (DCF77Buffer -> DCF77Buffer_s.Day) & (1ULL << 4) ) >> 4 ) * 10 +\
+							( ( (DCF77Buffer -> DCF77Buffer_s.Day) & (1ULL << 5) ) >> 5 ) * 20;
 
-	dateBuffer -> WeekDay = ( (DCF77Buffer -> DCF77Buffer_s.Weekday) & (1UL << 0) ) + \
-							( (DCF77Buffer -> DCF77Buffer_s.Weekday) & (1UL << 1) ) + \
-							( (DCF77Buffer -> DCF77Buffer_s.Weekday) & (1UL << 2) );
+	dateBuffer -> WeekDay = DCF77Buffer -> DCF77Buffer_s.Weekday & 0x7;
 
-	dateBuffer -> Month =	( (DCF77Buffer -> DCF77Buffer_s.Month) & (1UL << 0) ) + \
-							( (DCF77Buffer -> DCF77Buffer_s.Month) & (1UL << 1) ) + \
-							( (DCF77Buffer -> DCF77Buffer_s.Month) & (1UL << 2) ) + \
-							( (DCF77Buffer -> DCF77Buffer_s.Month) & (1UL << 3) ) + \
-							( ( (DCF77Buffer -> DCF77Buffer_s.Month) & (1UL << 4) ) >> 4 ) * 10;
+	dateBuffer -> Month =	( DCF77Buffer -> DCF77Buffer_s.Month & 0xF ) + \
+							( ( (DCF77Buffer -> DCF77Buffer_s.Month) & (1ULL << 4) ) >> 4 ) * 10;
 
-	dateBuffer -> Year =	( (DCF77Buffer -> DCF77Buffer_s.Year) & (1UL << 0) ) + \
-							( (DCF77Buffer -> DCF77Buffer_s.Year) & (1UL << 1) ) + \
-							( (DCF77Buffer -> DCF77Buffer_s.Year) & (1UL << 2) ) + \
-							( (DCF77Buffer -> DCF77Buffer_s.Year) & (1UL << 3) ) + \
-							( ( (DCF77Buffer -> DCF77Buffer_s.Year) & (1UL << 4) ) >> 4 ) * 10 +\
-							( ( (DCF77Buffer -> DCF77Buffer_s.Year) & (1UL << 5) ) >> 5 ) * 20 +\
-							( ( (DCF77Buffer -> DCF77Buffer_s.Year) & (1UL << 6) ) >> 6 ) * 40 +\
-							( ( (DCF77Buffer -> DCF77Buffer_s.Year) & (1UL << 7) ) >> 7 ) * 80;
+	dateBuffer -> Year =	( DCF77Buffer -> DCF77Buffer_s.Year & 0XF ) + \
+							( ( (DCF77Buffer -> DCF77Buffer_s.Year) & (1ULL << 4) ) >> 4 ) * 10 +\
+							( ( (DCF77Buffer -> DCF77Buffer_s.Year) & (1ULL << 5) ) >> 5 ) * 20 +\
+							( ( (DCF77Buffer -> DCF77Buffer_s.Year) & (1ULL << 6) ) >> 6 ) * 40 +\
+							( ( (DCF77Buffer -> DCF77Buffer_s.Year) & (1ULL << 7) ) >> 7 ) * 80;
 }
