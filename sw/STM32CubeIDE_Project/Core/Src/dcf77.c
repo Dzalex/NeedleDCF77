@@ -103,7 +103,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 		{
 			// Read the IC values
 			currentSample.signalLength = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
-			currentSample.pulseLength = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
+			currentSample.pulseLength = currentSample.signalLength - HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_2);
 
 			osMessageQueuePut(DCF77_TimeSamplesQueueHandle, &currentSample, 0U, 0U);
 		}
