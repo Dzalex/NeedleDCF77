@@ -19,6 +19,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "rtc.h"
+#include "interface.h"
 
 /* USER CODE BEGIN 0 */
 #include "stm32l0xx_ll_rtc.h"
@@ -157,5 +158,8 @@ void HAL_RTC_MspDeInit(RTC_HandleTypeDef* rtcHandle)
 }
 
 /* USER CODE BEGIN 1 */
-
+void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc)
+{
+	osEventFlagsSet(interfaceEventHandle, INTERFACE_SECOND_FLAG);
+}
 /* USER CODE END 1 */
