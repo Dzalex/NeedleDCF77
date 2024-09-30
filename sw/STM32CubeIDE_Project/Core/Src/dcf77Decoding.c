@@ -86,21 +86,19 @@ bool DCF77_IsStartOfEncodingOne(DCF77Buffer_t* DCF77Buffer)
 }
 bool DCF77_IsMinuteParityOk(DCF77Buffer_t* DCF77Buffer)
 {
-	int popCount = __builtin_popcount(DCF77Buffer->DCF77Buffer_s.Min);
-	return !((popCount + DCF77Buffer->DCF77Buffer_s.P1) % 2);
+	return DCF77Buffer->DCF77Buffer_s.P1 == __builtin_parity(DCF77Buffer->DCF77Buffer_s.Min);
 }
 bool DCF77_IsHourParityOk(DCF77Buffer_t* DCF77Buffer)
 {
-	int popCount = __builtin_popcount(DCF77Buffer->DCF77Buffer_s.Hour);
-	return !((popCount + DCF77Buffer->DCF77Buffer_s.P2) % 2);
+	return DCF77Buffer->DCF77Buffer_s.P2 == __builtin_parity(DCF77Buffer->DCF77Buffer_s.Hour);
 }
 bool DCF77_IsDateParityOk(DCF77Buffer_t* DCF77Buffer)
 {
-	int popCount = 	__builtin_popcount(DCF77Buffer->DCF77Buffer_s.Day);
-	popCount += 	__builtin_popcount(DCF77Buffer->DCF77Buffer_s.Weekday);
-	popCount +=		__builtin_popcount(DCF77Buffer->DCF77Buffer_s.Month);
-	popCount +=		__builtin_popcount(DCF77Buffer->DCF77Buffer_s.Year);
-	return !((popCount + DCF77Buffer->DCF77Buffer_s.P3) % 2);
+	int paritySum = __builtin_parity(DCF77Buffer->DCF77Buffer_s.Day);
+	paritySum ^= 	__builtin_parity(DCF77Buffer->DCF77Buffer_s.Weekday);
+	paritySum ^=	__builtin_parity(DCF77Buffer->DCF77Buffer_s.Month);
+	paritySum ^=	__builtin_parity(DCF77Buffer->DCF77Buffer_s.Year);
+	return DCF77Buffer->DCF77Buffer_s.P3 == paritySum;
 }
 
 void DCF77_DecodeTimeToRTCTimeBuffer(DCF77Buffer_t* DCF77Buffer, CopyOf_RTC_TimeTypeDef* timeBuffer)
