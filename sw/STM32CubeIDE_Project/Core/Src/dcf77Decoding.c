@@ -17,6 +17,8 @@ const uint16_t ONE_PULS_DURATION_MIN = 140;
 const uint16_t MINUTE_MARK_PULS_DURATION_MAX = 2100;
 const uint16_t MINUTE_MARK_PULS_DURATION_MIN = 1600;
 
+static uint64_t DCF77_DecodeBufferValueToActualNumber(uint64_t bufferValue);
+
 enum PulseType DCF77_CheckPulseType(DCF77_TimeSample_t* sampleToCheck)
 {
 	if(		sampleToCheck->pulseLength > ZERO_PULS_DURATION_MIN && \
@@ -103,14 +105,8 @@ bool DCF77_IsDateParityOk(DCF77Buffer_t* DCF77Buffer)
 
 void DCF77_DecodeTimeToRTCTimeBuffer(DCF77Buffer_t* DCF77Buffer, CopyOf_RTC_TimeTypeDef* timeBuffer)
 {
-	timeBuffer -> Minutes = ( DCF77Buffer -> DCF77Buffer_s.Min & 0xF ) + \
-							( ( (DCF77Buffer -> DCF77Buffer_s.Min) & (1ULL << 4) ) >> 4 ) * 10 +\
-							( ( (DCF77Buffer -> DCF77Buffer_s.Min) & (1ULL << 5) ) >> 5 ) * 20 +\
-							( ( (DCF77Buffer -> DCF77Buffer_s.Min) & (1ULL << 6) ) >> 6 ) * 40;
-
-	timeBuffer -> Hours =	( DCF77Buffer -> DCF77Buffer_s.Hour & 0xF ) + \
-							( ( (DCF77Buffer -> DCF77Buffer_s.Hour) & (1ULL << 4) )  >> 4 ) * 10 + \
-							( ( (DCF77Buffer -> DCF77Buffer_s.Hour) & (1ULL << 5) )  >> 5 ) * 20;
+	timeBuffer -> Minutes = DCF77_DecodeBufferValueToActualNumber(DCF77Buffer -> DCF77Buffer_s.Min);
+	timeBuffer -> Hours =	DCF77_DecodeBufferValueToActualNumber(DCF77Buffer -> DCF77Buffer_s.Hour);
 
 	if(12 < timeBuffer -> Hours)
 	{
@@ -127,18 +123,18 @@ void DCF77_DecodeTimeToRTCTimeBuffer(DCF77Buffer_t* DCF77Buffer, CopyOf_RTC_Time
 
 void DCF77_DecodeDateToRTCDateBuffer(DCF77Buffer_t* DCF77Buffer, CopyOf_RTC_DateTypeDef* dateBuffer)
 {
-	dateBuffer -> Date = 	( DCF77Buffer -> DCF77Buffer_s.Day & 0xF ) + \
-							( ( (DCF77Buffer -> DCF77Buffer_s.Day) & (1ULL << 4) ) >> 4 ) * 10 +\
-							( ( (DCF77Buffer -> DCF77Buffer_s.Day) & (1ULL << 5) ) >> 5 ) * 20;
+	dateBuffer -> Date 		= DCF77_DecodeBufferValueToActualNumber(DCF77Buffer -> DCF77Buffer_s.Day);
+	dateBuffer -> WeekDay 	= DCF77_DecodeBufferValueToActualNumber(DCF77Buffer -> DCF77Buffer_s.Weekday);
+	dateBuffer -> Month 	= DCF77_DecodeBufferValueToActualNumber(DCF77Buffer -> DCF77Buffer_s.Month);
+	dateBuffer -> Year 		= DCF77_DecodeBufferValueToActualNumber(DCF77Buffer -> DCF77Buffer_s.Year);
+}
 
-	dateBuffer -> WeekDay = DCF77Buffer -> DCF77Buffer_s.Weekday & 0x7;
-
-	dateBuffer -> Month =	( DCF77Buffer -> DCF77Buffer_s.Month & 0xF ) + \
-							( ( (DCF77Buffer -> DCF77Buffer_s.Month) & (1ULL << 4) ) >> 4 ) * 10;
-
-	dateBuffer -> Year =	( DCF77Buffer -> DCF77Buffer_s.Year & 0XF ) + \
-							( ( (DCF77Buffer -> DCF77Buffer_s.Year) & (1ULL << 4) ) >> 4 ) * 10 +\
-							( ( (DCF77Buffer -> DCF77Buffer_s.Year) & (1ULL << 5) ) >> 5 ) * 20 +\
-							( ( (DCF77Buffer -> DCF77Buffer_s.Year) & (1ULL << 6) ) >> 6 ) * 40 +\
-							( ( (DCF77Buffer -> DCF77Buffer_s.Year) & (1ULL << 7) ) >> 7 ) * 80;
+static uint64_t DCF77_DecodeBufferValueToActualNumber(uint64_t bufferValue)
+{
+	uint64_t actualNumber = bufferValue & 0xF;
+	actualNumber += ( (bufferValue >> 4) & 1ULL ) * 10;
+	actualNumber += ( (bufferValue >> 5) & 1ULL ) * 20;
+	actualNumber += ( (bufferValue >> 6) & 1ULL ) * 40;
+	actualNumber += ( (bufferValue >> 7) & 1ULL ) * 80;
+	return actualNumber;
 }
