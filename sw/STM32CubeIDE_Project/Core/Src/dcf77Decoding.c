@@ -22,7 +22,13 @@ enum PulseType DCF77_CheckPulseType(DCF77_TimeSample_t* sampleToCheck)
 	if(		sampleToCheck->pulseLength > ZERO_PULS_DURATION_MIN && \
 			sampleToCheck->pulseLength < ZERO_PULS_DURATION_MAX)
 	{
-		// Special case on 58th pulse is that is always 0 and that minute mark is determined by signal Length
+		/*
+		 * This case is for Minute mark - it is always 0
+		 *  ͞ |______| ͞|___| ͞ ͞|_....
+		 *  	 |   |
+		 *  	 |  First bit with value 0
+		 *  Minute pause
+		 */
 		if( sampleToCheck->signalLength > MINUTE_MARK_PULS_DURATION_MIN && \
 			sampleToCheck->signalLength < MINUTE_MARK_PULS_DURATION_MAX)
 		{
