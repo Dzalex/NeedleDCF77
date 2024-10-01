@@ -17,12 +17,12 @@ const uint16_t ONE_PULS_DURATION_MIN = 140;
 const uint16_t MINUTE_MARK_PULS_DURATION_MAX = 2100;
 const uint16_t MINUTE_MARK_PULS_DURATION_MIN = 1600;
 
+static bool SampleTimeIsInRange(uint16_t sampleTime, uint16_t minimalTime, uint16_t maximalTime);
 static uint64_t DCF77_DecodeBufferValueToActualNumber(uint64_t bufferValue);
 
 enum PulseType DCF77_CheckPulseType(DCF77_TimeSample_t* sampleToCheck)
 {
-	if(		sampleToCheck->pulseLength > ZERO_PULS_DURATION_MIN && \
-			sampleToCheck->pulseLength < ZERO_PULS_DURATION_MAX)
+	if(SampleTimeIsInRange(sampleToCheck->pulseLength, ZERO_PULS_DURATION_MIN, ZERO_PULS_DURATION_MAX))
 	{
 		/*
 		 * This case is for Minute mark - it is always 0
@@ -31,20 +31,22 @@ enum PulseType DCF77_CheckPulseType(DCF77_TimeSample_t* sampleToCheck)
 		 *  	 |  First bit with value 0
 		 *  Minute pause
 		 */
-		if( sampleToCheck->signalLength > MINUTE_MARK_PULS_DURATION_MIN && \
-			sampleToCheck->signalLength < MINUTE_MARK_PULS_DURATION_MAX)
+		if(SampleTimeIsInRange(sampleToCheck->signalLength, MINUTE_MARK_PULS_DURATION_MIN, MINUTE_MARK_PULS_DURATION_MAX))
 		{
 			return MINUTE_PULSE;
 		}
 		return ZERO_PULSE;
 	}
-	else if(sampleToCheck->pulseLength > ONE_PULS_DURATION_MIN && \
-			sampleToCheck->pulseLength < ONE_PULS_DURATION_MAX)
+	else if(SampleTimeIsInRange(sampleToCheck->pulseLength, ONE_PULS_DURATION_MIN, ONE_PULS_DURATION_MAX))
 	{
 		return ONE_PULSE;
 	}
 
 	return UNKNOWN_PULSE;
+}
+static bool SampleTimeIsInRange(uint16_t sampleTime, uint16_t minimalTime, uint16_t maximalTime)
+{
+	return sampleTime > minimalTime && sampleTime < maximalTime;
 }
 
 enum BufferErrors DCF77_CheckBufferIntegrity(DCF77Buffer_t* DCF77Buffer)
