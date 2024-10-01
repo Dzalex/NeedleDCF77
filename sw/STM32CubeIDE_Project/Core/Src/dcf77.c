@@ -43,34 +43,37 @@ ErrorStatus DCF77_GetTimeAndDate(RTC_TimeTypeDef* timeBuffer, RTC_DateTypeDef* d
 
 	while(timeoutTickCount > osKernelGetTickCount())
 	{
-		osStatus_t status = osMessageQueueGet(DCF77_TimeSamplesQueueHandle, &newSample, NULL, 10U);
-		if(osOK == status)
+		osStatus_t QueueStatus = osMessageQueueGet(DCF77_TimeSamplesQueueHandle, &newSample, NULL, 10U);
+		if(osOK != QueueStatus)
 		{
-			currentPulseType = DCF77_CheckPulseType(&newSample);
-			switch(currentPulseType)
+			osDelay(1);
+			continue;
+		}
+
+		currentPulseType = DCF77_CheckPulseType(&newSample);
+		switch(currentPulseType)
+		{
+		case MINUTE_PULSE:
+			if(INTEGRITY_OK == DCF77_CheckBufferIntegrity(&DCF77Buffer))
 			{
-			case MINUTE_PULSE:
-				if(DCF77_CheckBufferIntegrity(&DCF77Buffer) == INTEGRITY_OK)
-				{
-					// Calculate time - we have complete buffer;
-					// Casting to CopyOf_ types so we know what are we doing.
-					DCF77_DecodeTimeToRTCTimeBuffer(&DCF77Buffer, (CopyOf_RTC_TimeTypeDef*)timeBuffer);
-					DCF77_DecodeDateToRTCDateBuffer(&DCF77Buffer, (CopyOf_RTC_DateTypeDef*)dateBuffer);
-					return SUCCESS;
-				}
-				DCF77Buffer.DCF77bits = 0ULL;
-				currentBit = 1;
-				break;
-			case ZERO_PULSE:
-				currentBit++;
-				break;
-			case ONE_PULSE:
-				DCF77_SetBufferBitOnPosition(&DCF77Buffer, currentBit);
-				currentBit++;
-				break;
-			case UNKNOWN_PULSE:
-				break;
+				// Calculate time - we have complete buffer;
+				// Casting to CopyOf_ types so we know what are we doing.
+				DCF77_DecodeTimeToRTCTimeBuffer(&DCF77Buffer, (CopyOf_RTC_TimeTypeDef*)timeBuffer);
+				DCF77_DecodeDateToRTCDateBuffer(&DCF77Buffer, (CopyOf_RTC_DateTypeDef*)dateBuffer);
+				return SUCCESS;
 			}
+			DCF77_ResetBuffer(&DCF77Buffer);
+			currentBit = 1;
+			break;
+		case ZERO_PULSE:
+			currentBit++;
+			break;
+		case ONE_PULSE:
+			DCF77_SetBufferBitOnPosition(&DCF77Buffer, currentBit);
+			currentBit++;
+			break;
+		case UNKNOWN_PULSE:
+			break;
 		}
 	}
 	return ERROR;

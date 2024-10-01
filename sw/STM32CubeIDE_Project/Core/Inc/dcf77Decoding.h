@@ -71,6 +71,7 @@ typedef struct
 enum PulseType {ZERO_PULSE = 0, ONE_PULSE = 1, MINUTE_PULSE, UNKNOWN_PULSE};
 enum BufferErrors {INTEGRITY_OK = 0, FIRST_BIT_NOT_ZERO,  START_OF_ENC_NOT_ONE, WRONG_MIN_PARITY, WRONG_HOUR_PARITY, WRONG_DATE_PARITY};
 
+void DCF77_ResetBuffer(DCF77Buffer_t* DCF77Buffer);
 enum PulseType DCF77_CheckPulseType(DCF77_TimeSample_t* sampleToCheck);
 enum BufferErrors DCF77_CheckBufferIntegrity(DCF77Buffer_t* DCF77Buffer);
 void DCF77_SetBufferBitOnPosition(DCF77Buffer_t* DCF77Buffer, uint8_t currentBit);

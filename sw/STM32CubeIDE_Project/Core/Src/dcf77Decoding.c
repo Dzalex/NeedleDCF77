@@ -20,6 +20,11 @@ const uint16_t MINUTE_MARK_PULS_DURATION_MIN = 1600;
 static bool SampleTimeIsInRange(uint16_t sampleTime, uint16_t minimalTime, uint16_t maximalTime);
 static uint64_t DCF77_DecodeBufferValueToActualNumber(uint64_t bufferValue);
 
+void DCF77_ResetBuffer(DCF77Buffer_t* DCF77Buffer)
+{
+	DCF77Buffer -> DCF77bits = 0ULL;
+}
+
 enum PulseType DCF77_CheckPulseType(DCF77_TimeSample_t* sampleToCheck)
 {
 	if(SampleTimeIsInRange(sampleToCheck->pulseLength, ZERO_PULS_DURATION_MIN, ZERO_PULS_DURATION_MAX))
