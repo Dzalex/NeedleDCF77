@@ -32,6 +32,7 @@
 #include "needle.h"
 #include "vfd.h"
 #include "dcf77.h"
+#include "powerManagement.h"
 
 /* USER CODE END Includes */
 
@@ -92,7 +93,8 @@ const osEventFlagsAttr_t interfaceEvent_attributes = {
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
-
+static void enableNoiseSuppress();
+static void disableNoiseSuppress();
 /* USER CODE END FunctionPrototypes */
 
 void StartInterfaceTask(void *argument);
@@ -205,8 +207,6 @@ void StartInterfaceTask(void *argument)
 			break;
 		case INTERFACE_BUTTON_HOLD_FLAG:
 		case INTERFACE_2AM_FLAG:
-			NDL_DisableAllNeedles();
-			VFD_PowerOffAndDeinitialize();
 			showingDate = false;
 
 			osThreadResume(DCF77TaskHandle);
@@ -236,6 +236,8 @@ void StartDCF77Task(void *argument)
 
   for(;;)
   {
+	  enableNoiseSuppress();
+
 	  DCF77_Initialize();
 	  if (SUCCESS == DCF77_GetTimeAndDate(&timeToSet, &dateToSet))
 	  {
@@ -243,7 +245,8 @@ void StartDCF77Task(void *argument)
 		  HAL_RTC_SetDate(&hrtc, &dateToSet, RTC_FORMAT_BIN);
 	  }
 	  DCF77_DeInitialize();
-	  NDL_EnableAllNeedles();
+
+	  disableNoiseSuppress();
 	  osThreadSuspend(DCF77TaskHandle);
 	  osDelay(1);
   }
@@ -286,6 +289,17 @@ void timerCBWaitForVDFoff(void *argument)
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
+static void enableNoiseSuppress()
+{
+	NDL_DisableAllNeedles();
+	VFD_PowerOffAndDeinitialize();
+	LTC_SetPulseSkipMode();
+}
 
+static void disableNoiseSuppress()
+{
+	LTC_SetBurstMode();
+	NDL_EnableAllNeedles();
+}
 /* USER CODE END Application */
 
