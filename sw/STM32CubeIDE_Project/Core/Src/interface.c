@@ -31,3 +31,11 @@ void IF_ShowDateOnVFD(RTC_DateTypeDef date)
 
 	VFD_WriteDataToDsiplayAtPosition(dateDataBuffer, sizeof(dateDataBuffer), 0);
 }
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	if(GPIO_PIN_0 == GPIO_Pin)
+	{
+		osEventFlagsSet(interfaceEventHandle, INTERFACE_BUTTON_PRESS_FLAG);
+	}
+}
