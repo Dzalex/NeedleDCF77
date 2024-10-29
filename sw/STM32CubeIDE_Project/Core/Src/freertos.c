@@ -32,6 +32,7 @@
 #include "needle.h"
 #include "vfd.h"
 #include "dcf77.h"
+#include "powerManagement.h"
 
 /* USER CODE END Includes */
 
@@ -92,7 +93,8 @@ const osEventFlagsAttr_t interfaceEvent_attributes = {
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
-
+static void enableNoiseSuppress();
+static void disableNoiseSuppress();
 /* USER CODE END FunctionPrototypes */
 
 void StartInterfaceTask(void *argument);
@@ -193,9 +195,6 @@ void StartInterfaceTask(void *argument)
 				IF_ShowDateOnVFD(currentDate);
 			}
 			break;
-		case INTERFACE_2AM_FLAG:
-			/* TODO: At this event we unblock DCF77 task to start the sync! */
-			break;
 		case INTERFACE_BUTTON_PRESS_FLAG:
 			if(showingDate == false)
 			{
@@ -207,8 +206,10 @@ void StartInterfaceTask(void *argument)
 			osTimerStart(timerButtonPeriodicCheck100msHandle, 100);
 			break;
 		case INTERFACE_BUTTON_HOLD_FLAG:
-			/* TODO: At this event we unblock DCF77 task to start the sync! */
-			VFD_PrintCharacterAtPosition('s', 8);
+		case INTERFACE_2AM_FLAG:
+			showingDate = false;
+
+			osThreadResume(DCF77TaskHandle);
 		break;
 		}
 
@@ -227,13 +228,25 @@ void StartInterfaceTask(void *argument)
 void StartDCF77Task(void *argument)
 {
   /* USER CODE BEGIN StartDCF77Task */
-	DCF77_TimeSample_t newSample;;
-	DCF77_Initialize();
+	RTC_TimeTypeDef timeToSet = {0};
+	RTC_DateTypeDef dateToSet = {0};
   /* Infinite loop */
+
+  osThreadSuspend(DCF77TaskHandle);
+
   for(;;)
   {
-	  osMessageQueueGet(DCF77_TimeSamplesQueueHandle, &newSample, NULL, 0U);
+	  enableNoiseSuppress();
+
+	  DCF77_Initialize();
+	  if (SUCCESS == DCF77_GetTimeAndDate(&timeToSet, &dateToSet))
+	  {
+		  HAL_RTC_SetTime(&hrtc, &timeToSet, RTC_FORMAT_BIN);
+		  HAL_RTC_SetDate(&hrtc, &dateToSet, RTC_FORMAT_BIN);
+	  }
 	  DCF77_DeInitialize();
+
+	  disableNoiseSuppress();
 	  osThreadSuspend(DCF77TaskHandle);
 	  osDelay(1);
   }
@@ -276,6 +289,17 @@ void timerCBWaitForVDFoff(void *argument)
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
+static void enableNoiseSuppress()
+{
+	NDL_DisableAllNeedles();
+	VFD_PowerOffAndDeinitialize();
+	LTC_SetPulseSkipMode();
+}
 
+static void disableNoiseSuppress()
+{
+	LTC_SetBurstMode();
+	NDL_EnableAllNeedles();
+}
 /* USER CODE END Application */
 

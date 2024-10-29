@@ -19,3 +19,4 @@ local.properties
 *.elf
 *.cyclo
 makefile
+.vscode/
