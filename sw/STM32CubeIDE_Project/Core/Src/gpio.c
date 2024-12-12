@@ -82,7 +82,7 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PAPin PAPin PAPin */
+  /*Configure GPIO pins : VFD_STB_Pin BATT_CHECK_Pin LTC_EN2_Pin */
   GPIO_InitStruct.Pin = VFD_STB_Pin|BATT_CHECK_Pin|LTC_EN2_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -97,8 +97,8 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PBPin PBPin PBPin PBPin
-                           PBPin */
+  /*Configure GPIO pins : DCF77_PDN_Pin SHDN_24V_Pin LTC_SUSP_Pin LTC_HPWR_Pin
+                           LTC_MODE_Pin */
   GPIO_InitStruct.Pin = DCF77_PDN_Pin|SHDN_24V_Pin|LTC_SUSP_Pin|LTC_HPWR_Pin
                           |LTC_MODE_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -106,7 +106,7 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : PtPin */
+  /*Configure GPIO pin : LTC_CHRG_Pin */
   GPIO_InitStruct.Pin = LTC_CHRG_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
