@@ -6,6 +6,7 @@
  */
 
 #include "dcf77Decoding.h"
+#include <stdint.h>
 
 /* Constants related to DCF77 protocol */
 /* Min and max values from da6180B.pdf */
@@ -16,6 +17,11 @@ const uint16_t ONE_PULS_DURATION_MIN = 140;
 
 const uint16_t MINUTE_MARK_PULS_DURATION_MAX = 2100;
 const uint16_t MINUTE_MARK_PULS_DURATION_MIN = 1600;
+
+const uint16_t MAX_MINUTE = 59;
+const uint16_t MAX_HOUR = 23;
+const uint16_t MAX_DAY = 31;
+const uint16_t MAX_MONTH = 12;
 
 static bool SampleTimeIsInRange(uint16_t sampleTime, uint16_t minimalTime, uint16_t maximalTime);
 static uint64_t DCF77_DecodeBufferValueToActualNumber(uint64_t bufferValue);
@@ -75,6 +81,14 @@ enum BufferErrors DCF77_CheckBufferIntegrity(DCF77Buffer_t* DCF77Buffer)
 	if(false == DCF77_IsDateParityOk(DCF77Buffer))
 	{
 		return WRONG_DATE_PARITY;
+	}
+	if(	DCF77_DecodeBufferValueToActualNumber(DCF77Buffer->DCF77Buffer_s.Min)	>	MAX_MINUTE	||
+	 	DCF77_DecodeBufferValueToActualNumber(DCF77Buffer->DCF77Buffer_s.Hour)	>	MAX_HOUR	||
+		DCF77_DecodeBufferValueToActualNumber(DCF77Buffer->DCF77Buffer_s.Day)	>	MAX_DAY		||
+		DCF77_DecodeBufferValueToActualNumber(DCF77Buffer->DCF77Buffer_s.Month)>	MAX_MONTH 
+		)
+	{
+		return IMPOSSIBLE_DATA;
 	}
 
 	return INTEGRITY_OK;
