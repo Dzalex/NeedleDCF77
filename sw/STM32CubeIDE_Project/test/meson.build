@@ -12,11 +12,11 @@ unity_dependency = unity_subproject.get_variable('unity_dep')
 unity_gen_runner = unity_subproject.get_variable('gen_test_runner')
 
 src1 = files([
-  '../Core/Src/dcf77Decoding.c',
+  '../App/Src/dcf77Decoding.c',
   'TestDCF77Decoding.c'
 ])
 
-inc = include_directories('../Core/Inc')
+inc = include_directories('../App/Inc')
 
 
 test1 = executable('test1',

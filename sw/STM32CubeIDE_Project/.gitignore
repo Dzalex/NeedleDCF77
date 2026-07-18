@@ -18,5 +18,7 @@ local.properties
 *.list
 *.elf
 *.cyclo
-makefile
-.vscode/
+# CMake migration
+build
+mx.scratch
+!.settings

@@ -1,5 +1,5 @@
 #include "unity.h"
-#include "../Core/Inc/dcf77Decoding.h"
+#include "../App/Inc/dcf77Decoding.h"
 
 //DCF77Buffer_t testBufferConsistent1 = {.DCF77bits = 0b0000000010010001001010010000101011000111001100100101110101000110}; //10.09.2024
 DCF77Buffer_t testBufferConsistent1 = {.DCF77bits = 0b0000000010010001001010010000110001101000100100100100011001011110};
