@@ -41,6 +41,8 @@ ErrorStatus DCF77_GetTimeAndDate(RTC_TimeTypeDef* timeBuffer, RTC_DateTypeDef* d
 	enum PulseType currentPulseType;
 	uint32_t timeoutTickCount = SYNCHRONISATION_TIMEOUT + osKernelGetTickCount();
 
+	DCF77_ResetBuffer(&DCF77Buffer);
+
 	while(timeoutTickCount > osKernelGetTickCount())
 	{
 		osStatus_t QueueStatus = osMessageQueueGet(DCF77_TimeSamplesQueueHandle, &newSample, NULL, 10U);

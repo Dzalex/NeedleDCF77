@@ -253,8 +253,15 @@ void StartDCF77Task(void *argument)
 	  DCF77_Initialize();
 	  if (SUCCESS == DCF77_GetTimeAndDate(&timeToSet, &dateToSet))
 	  {
-		  HAL_RTC_SetTime(&hrtc, &timeToSet, RTC_FORMAT_BIN);
-		  HAL_RTC_SetDate(&hrtc, &dateToSet, RTC_FORMAT_BIN);
+      HAL_StatusTypeDef RTC_set_result;
+
+		  RTC_set_result = HAL_RTC_SetTime(&hrtc, &timeToSet, RTC_FORMAT_BIN);
+      if(RTC_set_result != HAL_OK)
+        continue;
+
+		  RTC_set_result = HAL_RTC_SetDate(&hrtc, &dateToSet, RTC_FORMAT_BIN);
+      if(RTC_set_result != HAL_OK)
+        continue;
 	  }
 	  DCF77_DeInitialize();
 

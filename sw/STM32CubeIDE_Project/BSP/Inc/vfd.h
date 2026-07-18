@@ -11,17 +11,17 @@
 #include "main.h"
 
 
-void VFD_PowerOnAndInitialize();
-void VFD_PowerOffAndDeinitialize();
+void VFD_PowerOnAndInitialize(void);
+void VFD_PowerOffAndDeinitialize(void);
 
-void VFD_Clear();
+void VFD_Clear(void);
 
 void VFD_PrintDigitAtPosition(uint8_t digit, uint8_t position);
 void VFD_PrintCharacterAtPosition(char digit, uint8_t position);
 void VFD_PrintPositiveNumber(uint32_t number);
 void VFD_WriteDataToDsiplayAtPosition(uint8_t *data, uint8_t size, uint8_t position);
 
-void VFD_Test();
+void VFD_Test(void);
 
 
 #endif /* INC_VFD_H_ */

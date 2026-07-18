@@ -48,7 +48,7 @@ static void VFD_ActivateStrobe();
 static void VFD_DeactivateStrobe();
 
 
-void VFD_PowerOnAndInitialize()
+void VFD_PowerOnAndInitialize(void)
 {
 	//Turn on 4V
 	LTC_Enable4VoltRail();
@@ -77,7 +77,7 @@ void VFD_PowerOnAndInitialize()
 	VFD_Command(VFD_BRIGHTNESS_BASE | VFD_SELECTED_BRIGHTNESS);
 }
 
-void VFD_PowerOffAndDeinitialize()
+void VFD_PowerOffAndDeinitialize(void)
 {
 	LT1617_DisableNeg24VRail();
 	HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
@@ -180,17 +180,17 @@ void VFD_WriteDataToDsiplayAtPosition(uint8_t *data, uint8_t size, uint8_t posit
 	VFD_Command(VFD_BRIGHTNESS_BASE | VFD_SELECTED_BRIGHTNESS);
 }
 
-void VFD_ActivateStrobe()
+void VFD_ActivateStrobe(void)
 {
 	HAL_GPIO_WritePin(VFD_STB_GPIO_Port, VFD_STB_Pin, GPIO_PIN_RESET);
 }
 
-void VFD_DeactivateStrobe()
+void VFD_DeactivateStrobe(void)
 {
 	HAL_GPIO_WritePin(VFD_STB_GPIO_Port, VFD_STB_Pin, GPIO_PIN_SET);
 }
 
-void VFD_Test()
+void VFD_Test(void)
 {
 	for(int i = 0; i < 26; i++)
 	{
