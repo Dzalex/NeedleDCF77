@@ -107,6 +107,32 @@ void test_DecodeDate(void)
     TEST_ASSERT_EQUAL_MEMORY(&date10_09_24, &returnedDate, sizeof(CopyOf_RTC_DateTypeDef));
 }
 
+// DCF77 hour/minute fields are BCD: units in bits [3:0], tens in bits [7:4] (each *10)
+DCF77Buffer_t sampleWithMidnight00h00m = {.DCF77Buffer_s = { .Hour = 0x00, .Min = 0x00 } }; // 00h00
+DCF77Buffer_t sampleWithNoon12h00m     = {.DCF77Buffer_s = { .Hour = 0x12, .Min = 0x00 } }; // 12h00
+
+void test_DecodeTime_MidnightIsTwelveAM(void)
+{
+    CopyOf_RTC_TimeTypeDef expectedMidnight = {.Hours = 12, .Minutes = 0, .TimeFormat = RTC_HOURFORMAT12_AM};
+
+    CopyOf_RTC_TimeTypeDef returnedTime = {0};
+    DCF77_DecodeTimeToRTCTimeBuffer(&sampleWithMidnight00h00m, &returnedTime);
+
+    TEST_ASSERT_EQUAL(expectedMidnight.Hours, returnedTime.Hours);
+    TEST_ASSERT_EQUAL(expectedMidnight.TimeFormat, returnedTime.TimeFormat);
+}
+
+void test_DecodeTime_NoonIsTwelvePM(void)
+{
+    CopyOf_RTC_TimeTypeDef expectedNoon = {.Hours = 12, .Minutes = 0, .TimeFormat = RTC_HOURFORMAT12_PM};
+
+    CopyOf_RTC_TimeTypeDef returnedTime = {0};
+    DCF77_DecodeTimeToRTCTimeBuffer(&sampleWithNoon12h00m, &returnedTime);
+
+    TEST_ASSERT_EQUAL(expectedNoon.Hours, returnedTime.Hours);
+    TEST_ASSERT_EQUAL(expectedNoon.TimeFormat, returnedTime.TimeFormat);
+}
+
 //00010011000111110011000101100100000011100100000000000000000 - 16h 03m 18.07.26
 DCF77Buffer_t sampleWith19h63m18_7_26 = {.DCF77bits = 0b0000000010011000111110011000101100101100011100100000000000000000}; // Impossible minutes
 DCF77Buffer_t sampleWith29h03m18_7_26 = {.DCF77bits = 0b0000000010011000111110011000110100100000011100100000000000000000}; // Impossibe hour

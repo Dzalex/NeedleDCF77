@@ -129,7 +129,16 @@ void DCF77_DecodeTimeToRTCTimeBuffer(DCF77Buffer_t* DCF77Buffer, CopyOf_RTC_Time
 	timeBuffer -> Minutes = DCF77_DecodeBufferValueToActualNumber(DCF77Buffer -> DCF77Buffer_s.Min);
 	timeBuffer -> Hours =	DCF77_DecodeBufferValueToActualNumber(DCF77Buffer -> DCF77Buffer_s.Hour);
 
-	if(12 < timeBuffer -> Hours)
+	if(0 == timeBuffer -> Hours)
+	{
+		timeBuffer -> Hours = 12;
+		timeBuffer -> TimeFormat = RTC_HOURFORMAT12_AM;
+	}
+	else if (12 == timeBuffer -> Hours)
+	{
+		timeBuffer -> TimeFormat = RTC_HOURFORMAT12_PM;
+	}
+	else if(12 < timeBuffer -> Hours)
 	{
 		timeBuffer -> Hours -= 12;
 		timeBuffer -> TimeFormat = RTC_HOURFORMAT12_PM;
