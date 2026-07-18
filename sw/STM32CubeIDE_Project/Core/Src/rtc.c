@@ -167,3 +167,4 @@ void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc)
 	osEventFlagsSet(interfaceEventHandle, INTERFACE_2AM_FLAG);
 }
 /* USER CODE END 1 */
+
