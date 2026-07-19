@@ -220,8 +220,10 @@ void StartInterfaceTask(void *argument)
 		case INTERFACE_BUTTON_HOLD_FLAG:
 		case INTERFACE_2AM_FLAG:
 			showingDate = false;
+			osTimerStop(timerWaitForVDFoffHandle);
 
 			osThreadResume(DCF77TaskHandle);
+			osThreadSuspend(interfaceTaskHandle);
 		break;
 		}
 
@@ -266,6 +268,7 @@ void StartDCF77Task(void *argument)
 	  DCF77_DeInitialize();
 
 	  disableNoiseSuppress();
+	  osThreadResume(interfaceTaskHandle);
 	  osThreadSuspend(DCF77TaskHandle);
 	  osDelay(1);
   }
